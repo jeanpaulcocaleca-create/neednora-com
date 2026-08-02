@@ -1,0 +1,372 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────
+   SIGNAL — NORA Design System
+   Primary: dark navy-black with sophisticated
+   dark-light-dark-light section rhythm.
+   ───────────────────────────────────────────────── */
+
+:root {
+  /* ── OS-responsive surfaces (nav, footer, legal pages) ── */
+  --bg:       #080B12;
+  --raised:   #0D1321;
+  --surface:  #161C2C;
+  --overlay:  #1E2840;
+  --rim:      #1E2840;
+  --rim-faint: rgba(30, 40, 64, 0.55);
+
+  /* ── OS-responsive text ── */
+  --fg:       #EEF2FF;
+  --muted:    #7A8AAA;
+  --subtle:   #4A5A7A;
+
+  /* ── Brand accent (Signal cyan) — used sparingly ── */
+  --accent:        #00B4D8;
+  --accent-10:     rgba(0, 180, 216, 0.08);
+  --accent-20:     rgba(0, 180, 216, 0.18);
+  --accent-border: rgba(0, 180, 216, 0.35);
+
+  /* ── Interactive (blue) ── */
+  --blue:         #3B82F6;
+  --blue-hover:   #60A5FA;
+  --blue-10:      rgba(59, 130, 246, 0.10);
+  --blue-border:  rgba(59, 130, 246, 0.40);
+
+  /* ── Semantic ── */
+  --ok:       #10B981;
+  --ok-10:    rgba(16, 185, 129, 0.10);
+  --warn:     #F59E0B;
+  --warn-10:  rgba(245, 158, 11, 0.10);
+  --danger:   #EF4444;
+
+  /* ── WhatsApp authentic colors ── */
+  --wa-bg:     #0a1929;
+  --wa-header: #1f2c34;
+  --wa-sent:   #005c4b;
+  --wa-recv:   #202c33;
+  --wa-text:   #d9dde0;
+  --wa-time:   #8696a0;
+  --wa-tick:   #53bdeb;
+
+  /* ── FIXED dark section tokens (independent of OS preference) ── */
+  --ds-bg:      #05080F;
+  --ds-raised:  #0A0E18;
+  --ds-surface: #0D1321;
+  --ds-border:  #1E2840;
+  --ds-fg:      #EEF2FF;
+  --ds-muted:   #7A8AAA;
+  --ds-subtle:  #4A5A7A;
+
+  /* ── FIXED light section tokens (independent of OS preference) ── */
+  --ls-bg:      #F1F5FD;
+  --ls-surface: #FFFFFF;
+  --ls-raised:  #E8EEF8;
+  --ls-border:  #D0DAEF;
+  --ls-fg:      #070A15;
+  --ls-muted:   #4A5A7A;
+  --ls-subtle:  #8A9ABB;
+  --ls-accent:  #0094B3;
+
+  /* ── Layout ── */
+  --nav-h:      64px;
+  --max-w:      1200px;
+  --prose-w:    68ch;
+  --gutter:     1.5rem;
+  --gutter-md:  2.5rem;
+  --gutter-lg:  4rem;
+
+  /* ── Radii ── */
+  --r-sm:  5px;
+  --r:     8px;
+  --r-lg:  12px;
+  --r-xl:  18px;
+
+  /* ── Fonts ── */
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), 'Courier New', monospace;
+
+  /* ── Motion ── */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t:    200ms;
+}
+
+/* ── Light Mode (OS-responsive surfaces only) ── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:       #F0F4FF;
+    --raised:   #E6EDFB;
+    --surface:  #FFFFFF;
+    --overlay:  #EDF1FC;
+    --rim:      #C8D3EE;
+    --rim-faint: rgba(180, 200, 240, 0.45);
+    --fg:       #070A15;
+    --muted:    #4A5A7A;
+    --subtle:   #8A9ABB;
+    --accent:        #0094B3;
+    --accent-10:     rgba(0, 148, 179, 0.08);
+    --accent-20:     rgba(0, 148, 179, 0.16);
+    --accent-border: rgba(0, 148, 179, 0.30);
+    --blue:          #2563EB;
+    --blue-hover:    #1D4ED8;
+    --ok:       #059669;
+    --warn:     #D97706;
+  }
+}
+
+/* ── Reset + Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+  line-height: 1.12;
+  text-wrap: balance;
+  letter-spacing: -0.022em;
+  color: var(--fg);
+}
+
+p { max-width: var(--prose-w); }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+
+/* ── Layout ── */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+@media (min-width: 768px)  { .container { padding: 0 var(--gutter-md); } }
+@media (min-width: 1024px) { .container { padding: 0 var(--gutter-lg); } }
+
+.section { padding: 6rem 0; }
+@media (max-width: 767px) { .section { padding: 4rem 0; } }
+
+/* ── Section transitions ── */
+.transition-dark-light {
+  height: 72px;
+  background: linear-gradient(to bottom, var(--ds-bg), var(--ls-bg));
+}
+.transition-light-dark {
+  height: 72px;
+  background: linear-gradient(to bottom, var(--ls-bg), var(--ds-bg));
+}
+.transition-white-dark {
+  height: 72px;
+  background: linear-gradient(to bottom, var(--ls-surface), var(--ds-bg));
+}
+
+/* ── Typography ── */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.eyebrow-light {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ls-accent);
+}
+
+.section-headline {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  letter-spacing: -0.025em;
+}
+
+/* ── Operational dot animation ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   transform: scale(1);    }
+  50%       { opacity: 0.4; transform: scale(0.85); }
+}
+
+.pulse-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  animation: pulse-dot 2.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ── WhatsApp conversation mockup ── */
+.wa-screen {
+  background: var(--wa-bg);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+.wa-header {
+  background: var(--wa-header);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.wa-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2a5a4a 0%, #1a3a2a 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 600; color: #a0cca0;
+  flex-shrink: 0;
+}
+.wa-body {
+  padding: 0.85rem;
+  display: flex; flex-direction: column;
+  gap: 0.6rem;
+}
+.wa-bubble {
+  max-width: 86%;
+  padding: 0.55rem 0.8rem 0.4rem;
+  border-radius: 10px 10px 10px 2px;
+  background: var(--wa-recv);
+  color: var(--wa-text);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  align-self: flex-start;
+}
+.wa-bubble.sent {
+  border-radius: 10px 10px 2px 10px;
+  background: var(--wa-sent);
+  align-self: flex-end;
+}
+.wa-meta {
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  font-size: 0.65rem;
+  color: var(--wa-time);
+}
+
+/* ── Light section NORA card ── */
+.nora-card-light {
+  background: var(--ls-surface);
+  border: 1px solid var(--ls-border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+}
+.nora-card-light-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1.1rem;
+  background: var(--ls-raised);
+  border-bottom: 1px solid var(--ls-border);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ls-muted);
+}
+.nora-card-light-body {
+  padding: 1.1rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.nora-row-light {
+  display: flex; gap: 0.75rem;
+  padding: 0.32rem 0;
+  border-bottom: 1px solid var(--ls-border);
+  align-items: flex-start;
+}
+.nora-row-light:last-child { border-bottom: none; }
+.nora-key-light {
+  color: var(--ls-muted);
+  font-size: 0.72rem;
+  min-width: 90px;
+  padding-top: 0.05rem;
+  flex-shrink: 0;
+  letter-spacing: 0.01em;
+}
+.nora-val-light {
+  color: var(--ls-fg);
+  font-weight: 500;
+}
+
+/* ── Dark section NORA card ── */
+.nora-card {
+  background: var(--ds-raised);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.nora-card-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: var(--ds-surface);
+  border-bottom: 1px solid var(--ds-border);
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+}
+.nora-card-body { padding: 1rem; font-size: 0.8125rem; line-height: 1.6; }
+.nora-row {
+  display: flex; gap: 0.75rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(30,40,64,0.55);
+  align-items: flex-start;
+}
+.nora-row:last-child { border-bottom: none; }
+.nora-key {
+  color: var(--ds-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem; min-width: 90px;
+  padding-top: 0.05rem; flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.nora-val { color: var(--ds-fg); font-weight: 500; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.badge-ok      { background: var(--ok-10);    color: var(--ok);     }
+.badge-warn    { background: var(--warn-10);   color: var(--warn);   }
+.badge-accent  { background: var(--accent-10); color: var(--accent); }
+.badge-blue    { background: var(--blue-10);   color: var(--blue);   }
+.badge-muted   { background: var(--rim);       color: var(--muted);  }
+
+/* Light-section badge variants */
+.badge-ok-ls   { background: rgba(16,185,129,0.1);  color: #059669; }
+.badge-warn-ls { background: rgba(245,158,11,0.1);  color: #D97706; }
+.badge-blue-ls { background: rgba(37,99,235,0.08);  color: #2563EB; }
+
+/* ── Divider ── */
+hr.divider {
+  border: none;
+  border-top: 1px solid var(--rim);
+  margin: 0;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .pulse-dot { animation: none; opacity: 1; }
+}
