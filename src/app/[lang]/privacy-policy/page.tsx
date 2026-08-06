@@ -122,6 +122,29 @@ export default async function PrivacyPolicy({
                   ? 'Puede desconectar su cuenta de WhatsApp Business de NORA en cualquier momento. La desconexión detendrá todo procesamiento futuro de mensajes.'
                   : 'You may disconnect your WhatsApp Business account from NORA at any time through your account settings. Disconnecting will stop all future message processing.'}
               </p>
+              <SubSection title={es ? '3.1 Permisos de la Plataforma Meta Utilizados' : '3.1 Meta Platform Permissions Used'}>
+                {es
+                  ? 'Para prestar el Servicio NORA, Project NEED solicita los siguientes permisos de la plataforma Meta en nombre de su empresa:'
+                  : 'To provide the NORA Service, Project NEED requests the following Meta platform permissions on your behalf:'}
+              </SubSection>
+              <ul>
+                {es ? <>
+                  <li><strong>whatsapp_business_messaging</strong> — Permite a NORA enviar y recibir mensajes de WhatsApp a través de su número de WhatsApp Business. Se usa exclusivamente para procesar los mensajes entrantes de su equipo y entregar respuestas operativas automatizadas.</li>
+                  <li><strong>whatsapp_business_management</strong> — Permite a NORA gestionar la configuración de su Cuenta de WhatsApp Business (WABA), incluidos el registro del número de teléfono y la configuración de webhooks durante la configuración inicial de la cuenta.</li>
+                  <li><strong>business_management</strong> — Permite a NORA verificar la asociación de su cartera empresarial y conectar su Cuenta de WhatsApp Business a la plataforma NORA a través del proceso de Registro Integrado de Meta.</li>
+                  <li><strong>public_profile</strong> — Permite autenticar a su cuenta durante el proceso de Registro Integrado de Meta. NORA no utiliza los datos del perfil público para ningún otro fin.</li>
+                </> : <>
+                  <li><strong>whatsapp_business_messaging</strong> — Enables NORA to send and receive WhatsApp messages through your WhatsApp Business number. Used exclusively to process incoming staff messages and deliver automated operational responses.</li>
+                  <li><strong>whatsapp_business_management</strong> — Enables NORA to manage your WhatsApp Business Account (WABA) configuration, including phone number registration and webhook setup during initial account configuration.</li>
+                  <li><strong>business_management</strong> — Enables NORA to verify your business portfolio membership and connect your WhatsApp Business Account to the NORA platform through Meta&apos;s Embedded Signup process.</li>
+                  <li><strong>public_profile</strong> — Used to authenticate your account during the Meta Embedded Signup process. NORA does not use public profile data for any other purpose.</li>
+                </>}
+              </ul>
+              <p>
+                {es
+                  ? 'Estos permisos se solicitan únicamente con su autorización explícita y se utilizan exclusivamente para los fines descritos. Los datos de Meta accedidos bajo estos permisos no se comparten con terceros para fines independientes.'
+                  : 'These permissions are requested only with your explicit authorization and used solely for the stated purposes. Meta data accessed under these permissions is not shared with third parties for independent purposes.'}
+              </p>
             </Section>
 
             <Section title={es ? '4. Compartir y Divulgar Datos' : '4. Data Sharing and Disclosure'}>

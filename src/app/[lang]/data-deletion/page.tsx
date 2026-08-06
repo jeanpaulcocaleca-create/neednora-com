@@ -9,7 +9,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params
   return {
-    title: lang === 'es' ? 'Solicitud de Eliminación de Datos' : 'Data Deletion Request',
+    title: lang === 'es' ? 'Instrucciones de Eliminación de Datos de Usuario' : 'User Data Deletion Instructions',
     description:
       lang === 'es'
         ? 'Cómo solicitar la eliminación de sus datos de la plataforma NORA de Project NEED.'
@@ -64,12 +64,24 @@ export default async function DataDeletion({
           <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--rim)' }}>
             <div className="eyebrow" style={{ marginBottom: '0.75rem' }}>Legal</div>
             <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', marginBottom: '0.75rem' }}>
-              {es ? 'Solicitud de Eliminación de Datos' : 'Data Deletion Request'}
+              {es ? 'Instrucciones de Eliminación de Datos de Usuario' : 'User Data Deletion Instructions'}
             </h1>
             <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', margin: 0 }}>
               {es
                 ? 'Cómo solicitar la eliminación de sus datos de la plataforma NORA.'
                 : 'How to request the deletion of your data from the NORA platform.'}
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--surface)', border: '1px solid var(--rim)',
+            borderRadius: 'var(--r)', padding: '1.1rem 1.25rem',
+            marginBottom: '2.5rem',
+          }}>
+            <p style={{ fontSize: '0.9375rem', color: 'var(--muted)', margin: 0, lineHeight: 1.7 }}>
+              {es
+                ? <><strong style={{ color: 'var(--fg)' }}>Nota importante:</strong> Desconectar su cuenta de WhatsApp Business de NORA y solicitar la eliminación de datos son acciones separadas. Desconectar su cuenta detendrá el procesamiento futuro de mensajes, pero los datos operativos históricos ya almacenados en NORA permanecerán hasta que envíe una solicitud de eliminación formal. Se requiere una solicitud de eliminación por escrito para eliminar los datos almacenados. Podemos solicitar que verifique su identidad y autorización antes de procesar una solicitud de eliminación para confirmar que tiene autoridad sobre la cuenta empresarial en cuestión.</>
+                : <><strong style={{ color: 'var(--fg)' }}>Important note:</strong> Disconnecting your WhatsApp Business account from NORA and requesting data deletion are separate actions. Disconnecting your account stops future message processing, but historical operational data already stored in NORA will remain until you submit a formal deletion request. A written deletion request is required to remove stored data. We may ask you to verify your identity and authorization before processing a deletion request to confirm you have authority over the business account in question.</>}
             </p>
           </div>
 
