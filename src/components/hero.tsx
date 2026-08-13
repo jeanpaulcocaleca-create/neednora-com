@@ -104,11 +104,7 @@ export function Hero({ lang }: { lang: Locale }) {
             </p>
 
             <h1 className="hero-title-v3">
-              {es ? (
-                <>Su negocio sigue funcionando,<br /><span>aunque usted no esté pendiente.</span></>
-              ) : (
-                <>Your business keeps running<br /><span>even when you&rsquo;re not watching.</span></>
-              )}
+              {es ? 'Tu Negocio. Organizado.' : 'Business. Organized.'}
             </h1>
 
             <p className="hero-lede-v3">
