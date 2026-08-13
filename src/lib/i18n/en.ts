@@ -2,7 +2,7 @@ export const en = {
   locale: 'en' as const,
 
   meta: {
-    titleTemplate: '%s — NORA by Project NEED',
+    titleTemplate: '%s — NORA',
     defaultTitle: 'NORA — AI Business Operating System',
     description:
       'NORA turns WhatsApp conversations into organized business operations. Connect your WhatsApp Business account and let NORA handle the rest.',
@@ -17,7 +17,7 @@ export const en = {
 
   hero: {
     eyebrow: 'AI Business Operating System',
-    headline: 'Conversations run your operation.',
+    headline: 'Business. Organized.',
     subhead:
       'NORA turns WhatsApp conversations into structured operations — routed, tracked, and visible — without changing how your team works.',
     ctaPrimary: 'Get Early Access',
@@ -306,8 +306,9 @@ export const en = {
       "We're onboarding a limited number of businesses in our pilot phase. We'll be in touch within 48 hours.",
     fields: {
       name: { label: 'Your name', placeholder: 'Andrés García' },
-      business: { label: 'Business name', placeholder: 'Basecamp Monteverde' },
-      whatsapp: { label: 'WhatsApp number', placeholder: '+506 8888 0000' },
+      email: { label: 'Email address', placeholder: 'you@yourcompany.com' },
+      business: { label: 'Business name', placeholder: 'Hotel Sierra Verde' },
+      whatsapp: { label: 'WhatsApp number', placeholder: '+1 (555) 000-0000' },
       industry: {
         label: 'Industry',
         placeholder: 'Select your industry',
@@ -329,7 +330,7 @@ export const en = {
     },
     submit: 'Request Early Access',
     submitting: 'Sending…',
-    errorMsg: 'Something went wrong. Please email us directly at jeanpaulcocaleca@gmail.com',
+    errorMsg: 'Something went wrong. Please email us at hello@neednora.com',
     successTitle: 'Request received.',
     successBody:
       "Thank you. We'll review your details and be in touch within 48 hours to discuss how NORA can work for your business.",
@@ -354,7 +355,7 @@ export const en = {
   },
 
   footer: {
-    tagline: 'AI Business Operating System by Project NEED',
+    tagline: 'Networked Operations & Response Assistant',
     links: [
       { href: '/#product-story', label: 'How it works' },
       { href: '/privacy-policy', label: 'Privacy Policy' },
@@ -362,7 +363,7 @@ export const en = {
       { href: '/data-deletion', label: 'Data Deletion' },
       { href: '/contact', label: 'Contact' },
     ],
-    copyright: '© 2026 Project NEED. All rights reserved.',
+    copyright: '© 2026 NORA. All rights reserved.',
   },
 
   contact: {

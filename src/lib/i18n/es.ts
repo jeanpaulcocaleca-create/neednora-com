@@ -2,7 +2,7 @@ export const es = {
   locale: 'es' as const,
 
   meta: {
-    titleTemplate: '%s — NORA by Project NEED',
+    titleTemplate: '%s — NORA',
     defaultTitle: 'NORA — Sistema Operativo Empresarial con IA',
     description:
       'NORA transforma las conversaciones de WhatsApp en operaciones empresariales organizadas. Conecta tu cuenta de WhatsApp Business y deja que NORA gestione el resto.',
@@ -17,7 +17,7 @@ export const es = {
 
   hero: {
     eyebrow: 'Sistema Operativo Empresarial con IA',
-    headline: 'Las conversaciones dirigen tu operación.',
+    headline: 'Tu Negocio. Organizado.',
     subhead:
       'NORA transforma las conversaciones de WhatsApp en operaciones estructuradas — enrutadas, rastreadas y visibles — sin cambiar la forma en que trabaja tu equipo.',
     ctaPrimary: 'Solicitar Acceso Anticipado',
@@ -306,8 +306,9 @@ export const es = {
       'Estamos incorporando un número limitado de empresas en nuestra fase piloto. Te contactaremos en un plazo de 48 horas.',
     fields: {
       name: { label: 'Tu nombre', placeholder: 'Andrés García' },
-      business: { label: 'Nombre del negocio', placeholder: 'Basecamp Monteverde' },
-      whatsapp: { label: 'Número de WhatsApp', placeholder: '+506 8888 0000' },
+      email: { label: 'Correo electrónico', placeholder: 'tu@tuempresa.com' },
+      business: { label: 'Nombre del negocio', placeholder: 'Hotel Sierra Verde' },
+      whatsapp: { label: 'Número de WhatsApp', placeholder: '+1 (555) 000-0000' },
       industry: {
         label: 'Industria',
         placeholder: 'Selecciona tu industria',
@@ -330,7 +331,7 @@ export const es = {
     submit: 'Solicitar Acceso Anticipado',
     submitting: 'Enviando…',
     errorMsg:
-      'Algo salió mal. Por favor, escríbenos directamente a jeanpaulcocaleca@gmail.com',
+      'Algo salió mal. Por favor, escríbenos directamente a hello@neednora.com',
     successTitle: 'Solicitud recibida.',
     successBody:
       'Gracias. Revisaremos tu información y nos comunicaremos contigo dentro de las 48 horas para discutir cómo NORA puede funcionar para tu negocio.',
@@ -355,7 +356,7 @@ export const es = {
   },
 
   footer: {
-    tagline: 'Sistema Operativo Empresarial con IA · Project NEED',
+    tagline: 'Networked Operations & Response Assistant',
     links: [
       { href: '/#product-story', label: 'Cómo funciona' },
       { href: '/privacy-policy', label: 'Política de Privacidad' },
@@ -363,7 +364,7 @@ export const es = {
       { href: '/data-deletion', label: 'Eliminación de Datos' },
       { href: '/contact', label: 'Contacto' },
     ],
-    copyright: '© 2026 Project NEED. Todos los derechos reservados.',
+    copyright: '© 2026 NORA. Todos los derechos reservados.',
   },
 
   contact: {

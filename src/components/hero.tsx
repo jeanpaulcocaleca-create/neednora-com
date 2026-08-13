@@ -1,255 +1,217 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'motion/react'
-import { ArrowRight } from 'lucide-react'
-import { getTranslations, type Locale } from '@/lib/i18n'
+import Image from 'next/image'
+import { AnimatePresence, motion } from 'motion/react'
+import { ArrowRight, Check, MessageCircle, ShieldCheck } from 'lucide-react'
+import { NoraBrand } from '@/components/brand'
+import type { Locale } from '@/lib/i18n'
 
-function NoraCanvas({ lang }: { lang: Locale }) {
-  const t = getTranslations(lang)
-  const canvas = t.hero.canvas
+const SESSION_KEY = 'nora-intro-seen'
 
-  return (
-    <div
-      style={{
-        width: '100%',
-        maxWidth: 400,
-        background: 'linear-gradient(160deg, #0C1020 0%, #080C18 100%)',
-        border: '1px solid #1E2840',
-        borderTop: '1px solid rgba(0,180,216,0.35)',
-        borderRadius: 'var(--r-xl)',
-        overflow: 'hidden',
-        boxShadow: '0 0 0 1px rgba(0,180,216,0.07), 0 24px 72px rgba(0,0,0,0.55)',
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '0.8rem 1.1rem',
-          borderBottom: '1px solid #1E2840',
-          background: 'rgba(10,14,24,0.7)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <span className="pulse-dot" aria-hidden="true" />
-          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#EEF2FF', letterSpacing: '-0.01em' }}>
-            {canvas.title}
-          </span>
-          <span style={{ fontSize: '0.75rem', color: '#4A5A7A', letterSpacing: '-0.01em' }}>
-            {canvas.subtitle}
-          </span>
-        </div>
-        <span style={{ fontSize: '0.65rem', fontWeight: 600, color: '#10B981', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          {canvas.live}
-        </span>
-      </div>
-
-      {/* Threads */}
-      {canvas.threads.map((t, i) => (
-        <motion.div
-          key={t.id}
-          initial={{ opacity: 0, x: 12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            padding: '0.85rem 1.1rem 0.85rem 1.4rem',
-            borderLeft: `2.5px solid ${t.accentColor}`,
-            borderBottom: i < canvas.threads.length - 1 ? '1px solid rgba(30,40,64,0.7)' : 'none',
-            background: t.accentBg,
-            position: 'relative',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.75rem' }}>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                <span style={{
-                  fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.08em',
-                  textTransform: 'uppercase', color: t.accentColor,
-                }}>
-                  {t.category}
-                </span>
-                <span style={{ fontSize: '0.62rem', color: '#4A5A7A', fontFamily: 'var(--font-mono)' }}>
-                  {t.id}
-                </span>
-              </div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#EEF2FF', lineHeight: 1.35, marginBottom: '0.2rem' }}>
-                {t.title}
-              </div>
-              <div style={{ fontSize: '0.73rem', color: '#7A8AAA', lineHeight: 1.4 }}>
-                {t.detail}
-              </div>
-            </div>
-            <div style={{
-              flexShrink: 0,
-              fontSize: '0.62rem', fontWeight: 600,
-              letterSpacing: '0.07em', textTransform: 'uppercase',
-              color: t.statusColor,
-              padding: '0.15rem 0.4rem',
-              borderRadius: 4,
-              border: `1px solid ${t.statusColor}33`,
-              background: `${t.statusColor}0D`,
-              marginTop: '0.1rem',
-            }}>
-              {t.statusLabel}
-            </div>
-          </div>
-        </motion.div>
-      ))}
-
-      {/* Footer */}
-      <div style={{
-        padding: '0.6rem 1.1rem',
-        background: 'rgba(10,14,24,0.5)',
-        borderTop: '1px solid #1E2840',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      }}>
-        <span style={{ fontSize: '0.72rem', color: '#4A5A7A' }}>
-          {canvas.footer}
-        </span>
-        <span style={{ fontSize: '0.68rem', color: '#00B4D8', letterSpacing: '-0.01em' }}>
-          {canvas.updated}
-        </span>
-      </div>
-    </div>
-  )
+const conv = {
+  es: [
+    { from: 'employee', sender: 'Daniel', time: '7:03 AM', text: 'Buenos días NORA, ya llegué.' },
+    { from: 'nora', time: '7:03 AM', text: 'Buenos días, Daniel. Llegada registrada.\nHoy tiene 4 pendientes. Le envié la lista en orden de prioridad.' },
+    { from: 'owner', sender: 'Dueño', time: '7:08 AM', text: '¿Llegó todo el equipo?' },
+    { from: 'nora', time: '7:08 AM', text: 'Sí. Los 4 empleados programados ya están presentes.\nTodo el equipo está completo.' },
+  ],
+  en: [
+    { from: 'employee', sender: 'Daniel', time: '7:03 AM', text: 'Good morning NORA, I just arrived.' },
+    { from: 'nora', time: '7:03 AM', text: 'Good morning, Daniel. Arrival registered.\nYou have 4 tasks for today. I\'ve sent them in priority order.' },
+    { from: 'owner', sender: 'Owner', time: '7:08 AM', text: 'Has everyone arrived?' },
+    { from: 'nora', time: '7:08 AM', text: 'Yes. All 4 scheduled team members are present.\nEveryone is here.' },
+  ],
 }
 
 export function Hero({ lang }: { lang: Locale }) {
-  const t = getTranslations(lang)
-  const h = t.hero
+  const es = lang === 'es'
+  const messages = conv[lang]
+  const [introVisible, setIntroVisible] = useState(false)
+  const [skipIntro, setSkipIntro] = useState(true)
+  const [visible, setVisible] = useState(0)
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  useEffect(() => {
+    const already = typeof sessionStorage !== 'undefined' && sessionStorage.getItem(SESSION_KEY)
+    if (!already) {
+      setSkipIntro(false)
+      setIntroVisible(true)
+      sessionStorage.setItem(SESSION_KEY, '1')
+      const t1 = setTimeout(() => setIntroVisible(false), 1500)
+      const t2 = setTimeout(() => setSkipIntro(true), 2100)
+      timersRef.current = [t1, t2]
+    }
+    return () => timersRef.current.forEach(clearTimeout)
+  }, [])
+
+  useEffect(() => {
+    const delays = [700, 2000, 3500, 5000]
+    const ts = delays.map((d, i) => setTimeout(() => setVisible(i + 1), d))
+    timersRef.current.push(...ts)
+    return () => ts.forEach(clearTimeout)
+  }, [])
+
+  const copyDelay = skipIntro ? 0 : 1.4
 
   return (
-    <section
-      aria-label="Hero"
-      style={{
-        background: 'var(--ds-bg)',
-        paddingTop: 'calc(var(--nav-h) + 5rem)',
-        paddingBottom: '5rem',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Dot grid texture */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(rgba(0,180,216,0.13) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-          pointerEvents: 'none',
-          maskImage: 'radial-gradient(ellipse 80% 80% at 70% 40%, black 10%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 70% 40%, black 10%, transparent 70%)',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute', top: '-10%', right: '-5%',
-          width: 600, height: 600,
-          background: 'radial-gradient(ellipse at center, rgba(0,180,216,0.06) 0%, transparent 65%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div className="container">
-        <div className="hero-grid" style={{ display: 'grid', gap: '3.5rem', alignItems: 'center' }}>
-
-          {/* Left: Copy */}
+    <>
+      <AnimatePresence>
+        {introVisible && (
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="brand-intro"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.35 } }}
+            exit={{ opacity: 0, transition: { duration: 0.55 } }}
           >
-            <div className="eyebrow" style={{ marginBottom: '1.25rem', color: 'var(--accent)' }}>
-              {h.eyebrow}
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.1 } }}
+              className="brand-intro-inner"
+            >
+              <div className="brand-intro-name">NORA</div>
+              <motion.div
+                className="brand-intro-sub"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 0.4, delay: 0.55 } }}
+              >
+                Networked&nbsp;·&nbsp;Operations&nbsp;·&nbsp;Response&nbsp;·&nbsp;Assistant
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <section className="hero-premium" aria-label="NORA introduction">
+        <div className="hero-aurora" aria-hidden="true" />
+        <div className="hero-gridlines" aria-hidden="true" />
+
+        <div className="container hero-premium-grid">
+          {/* ── Left: copy ── */}
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: copyDelay, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="hero-brand-lockup">
+              <NoraBrand priority />
             </div>
 
-            <h1
-              style={{
-                fontSize: 'clamp(2.5rem, 5.5vw, 4rem)',
-                fontWeight: 700,
-                letterSpacing: '-0.033em',
-                lineHeight: 1.05,
-                marginBottom: '1.25rem',
-                color: 'var(--ds-fg)',
-              }}
-            >
-              {h.headline}
-            </h1>
-
-            <p
-              style={{
-                fontSize: 'clamp(1.0625rem, 2vw, 1.25rem)',
-                color: 'var(--ds-muted)',
-                lineHeight: 1.6,
-                fontWeight: 400,
-                marginBottom: '0.6rem',
-                maxWidth: '48ch',
-              }}
-            >
-              {h.subhead}
+            <p className="eyebrow hero-eyebrow">
+              {es ? 'SISTEMA OPERATIVO PARA NEGOCIOS' : 'BUSINESS OPERATING SYSTEM'}
             </p>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}>
-              <Link
-                href={`/${lang}/#early-access`}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-                  background: 'var(--blue)', color: '#ffffff',
-                  fontWeight: 600, fontSize: '0.9375rem',
-                  padding: '0.75rem 1.5rem', borderRadius: 'var(--r)',
-                  transition: 'background var(--t)', letterSpacing: '-0.01em',
-                  boxShadow: '0 4px 16px rgba(59,130,246,0.3)',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--blue-hover)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'var(--blue)')}
-              >
-                {h.ctaPrimary}
-                <ArrowRight size={15} strokeWidth={2.5} aria-hidden="true" />
+            <h1 className="hero-title-v3">
+              {es ? (
+                <>Su negocio sigue funcionando,<br /><span>aunque usted no esté pendiente.</span></>
+              ) : (
+                <>Your business keeps running<br /><span>even when you&rsquo;re not watching.</span></>
+              )}
+            </h1>
+
+            <p className="hero-lede-v3">
+              {es
+                ? 'NORA pregunta, confirma, documenta y da seguimiento. Solo lo interrumpe cuando algo realmente necesita su decisión.'
+                : 'NORA asks, confirms, documents, and follows up. It only interrupts you when something actually needs your decision.'}
+            </p>
+
+            <div className="hero-actions">
+              <Link href={`/${lang}/#try-nora`} className="btn-primary-premium">
+                {es ? 'PRUEBA NORA' : 'TRY NORA'}
+                <ArrowRight size={15} />
               </Link>
-              <Link
-                href={`/${lang}/#product-story`}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
-                  color: 'var(--ds-muted)', fontWeight: 500,
-                  fontSize: '0.9375rem', letterSpacing: '-0.01em',
-                  transition: 'color var(--t)',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--ds-fg)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'var(--ds-muted)')}
-              >
-                {h.ctaSecondary}
+              <Link href={`/${lang}/#how-nora-works`} className="btn-secondary-premium">
+                {es ? 'Ver cómo trabaja' : 'See how she works'}
               </Link>
+            </div>
+
+            <div className="hero-trustline">
+              <span><ShieldCheck size={13} /> {es ? 'Aislada por negocio' : 'Business-isolated'}</span>
+              <span><MessageCircle size={13} /> WhatsApp-first</span>
+              <span><Check size={13} /> {es ? 'Solo escala lo importante' : 'Escalates only what matters'}</span>
             </div>
           </motion.div>
 
-          {/* Right: NORA canvas */}
+          {/* ── Right: conversation panel ── */}
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="hero-canvas-wrap"
-            style={{ display: 'flex', justifyContent: 'center' }}
+            className="hero-conv-shell"
+            initial={{ opacity: 0, x: 22, scale: 0.98 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: copyDelay + 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <NoraCanvas lang={lang} />
+            {/* Header */}
+            <div className="hconv-header">
+              <div className="hconv-identity">
+                <Image src="/brand/nora-icon.png" alt="" width={30} height={30} />
+                <div>
+                  <b>NORA</b>
+                  <span>{es ? 'Sistema Operativo' : 'Operating System'}</span>
+                </div>
+              </div>
+              <span className="hconv-live"><i />{es ? 'ACTIVA' : 'LIVE'}</span>
+            </div>
+
+            {/* Date strip */}
+            <div className="hconv-strip">
+              <span className="hconv-date">{es ? 'HOY · MAÑANA' : 'TODAY · MORNING'}</span>
+              <span className="hconv-team">
+                <Check size={9} />
+                {es ? '4 empleados programados' : '4 employees scheduled'}
+              </span>
+            </div>
+
+            {/* Message thread */}
+            <div className="hconv-body">
+              {messages.map((msg, i) =>
+                visible > i ? (
+                  <motion.div
+                    key={i}
+                    className={`hconv-msg hconv-msg-${msg.from}`}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {msg.from !== 'nora' && (
+                      <div className="hconv-sender">{msg.sender}</div>
+                    )}
+                    <div className="hconv-bubble">{msg.text}</div>
+                    <div className="hconv-time">{msg.time}</div>
+                  </motion.div>
+                ) : null,
+              )}
+
+              {/* Typing indicator */}
+              {[1, 3].includes(visible) && (
+                <motion.div
+                  key={`typing-${visible}`}
+                  className="hconv-msg hconv-msg-nora"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <div className="hconv-typing"><span /><span /><span /></div>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Footer note */}
+            {visible >= 4 && (
+              <motion.div
+                className="hconv-footer"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Check size={11} />
+                {es
+                  ? 'El equipo está completo. Nada que verificar.'
+                  : 'Team is complete. Nothing for you to check.'}
+              </motion.div>
+            )}
           </motion.div>
-
         </div>
-      </div>
-
-      <style>{`
-        @media (min-width: 880px) {
-          .hero-grid {
-            grid-template-columns: 52% 48% !important;
-          }
-          .hero-canvas-wrap {
-            justify-content: flex-end !important;
-          }
-        }
-        .hero-break { display: none; }
-        @media (min-width: 640px) { .hero-break { display: inline; } }
-      `}</style>
-    </section>
+      </section>
+    </>
   )
 }

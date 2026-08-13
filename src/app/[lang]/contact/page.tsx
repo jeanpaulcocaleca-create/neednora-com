@@ -2,10 +2,10 @@
 
 import { useState, use } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Mail } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { getTranslations, type Locale } from '@/lib/i18n'
 
-const CONTACT_EMAIL = 'jeanpaulcocaleca@gmail.com'
+// Contact form submits via /api/contact — no personal email displayed in public UI
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
 
@@ -53,33 +53,6 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
             </p>
           </div>
 
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            style={{
-              display: 'flex', alignItems: 'center', gap: '0.9rem',
-              background: 'var(--surface)', border: '1px solid var(--rim)',
-              borderRadius: 'var(--r-lg)', padding: '1.1rem 1.25rem',
-              marginBottom: '2.5rem', transition: 'border-color var(--t)', textDecoration: 'none',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent-border)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--rim)')}
-          >
-            <div style={{
-              width: 36, height: 36, borderRadius: 'var(--r)',
-              background: 'var(--accent-10)', border: '1px solid var(--accent-border)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            }}>
-              <Mail size={16} color="var(--accent)" strokeWidth={1.75} />
-            </div>
-            <div>
-              <div style={{ fontSize: '0.8125rem', color: 'var(--subtle)', marginBottom: '0.15rem' }}>
-                {ct.directLabel}
-              </div>
-              <div style={{ fontSize: '0.9375rem', fontWeight: 500, color: 'var(--fg)' }}>
-                {CONTACT_EMAIL}
-              </div>
-            </div>
-          </a>
 
           {state === 'success' ? (
             <div style={{

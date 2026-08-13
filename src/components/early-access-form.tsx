@@ -49,7 +49,9 @@ export function EarlyAccessForm({ lang }: { lang: Locale }) {
 
     const form = e.currentTarget
     const data = {
+      type:     'early_access',
       name:     (form.elements.namedItem('name')     as HTMLInputElement).value,
+      email:    (form.elements.namedItem('email')    as HTMLInputElement).value,
       business: (form.elements.namedItem('business') as HTMLInputElement).value,
       whatsapp: (form.elements.namedItem('whatsapp') as HTMLInputElement).value,
       industry: (form.elements.namedItem('industry') as HTMLSelectElement).value,
@@ -146,6 +148,16 @@ export function EarlyAccessForm({ lang }: { lang: Locale }) {
                 <input
                   id="ea-name" name="name" type="text" required autoComplete="name"
                   placeholder={ea.fields.name.placeholder}
+                  style={fieldStyle}
+                  onFocus={focusField} onBlur={blurField}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="ea-email" style={labelStyle}>{ea.fields.email.label}</label>
+                <input
+                  id="ea-email" name="email" type="email" required autoComplete="email"
+                  placeholder={ea.fields.email.placeholder}
                   style={fieldStyle}
                   onFocus={focusField} onBlur={blurField}
                 />
