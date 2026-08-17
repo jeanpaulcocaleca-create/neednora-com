@@ -17,6 +17,7 @@ export function Footer({ lang }: { lang: Locale }) {
             <Link href={`/${lang}/#try-nora`}>{es ? 'Prueba NORA' : 'Try NORA'}</Link>
             <Link href={`/${lang}/privacy-policy`}>{es ? 'Privacidad' : 'Privacy'}</Link>
             <Link href={`/${lang}/terms-of-service`}>{es ? 'Términos' : 'Terms'}</Link>
+            <Link href={`/${lang}/cookie-policy`}>{es ? 'Cookies' : 'Cookies'}</Link>
             <Link href={`/${lang}/data-deletion`}>{es ? 'Eliminación de datos' : 'Data deletion'}</Link>
             <Link href={`/${lang}/contact`}>{es ? 'Contacto' : 'Contact'}</Link>
           </nav>

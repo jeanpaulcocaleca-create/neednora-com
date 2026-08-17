@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { locales, getTranslations, type Locale } from '@/lib/i18n'
 import { Nav } from '@/components/nav'
 import { Footer } from '@/components/footer'
+import { CookieNotice } from '@/components/cookie-notice'
 
 export async function generateStaticParams() {
   return locales.map((lang) => ({ lang }))
@@ -42,6 +43,7 @@ export default async function LangLayout({
       <Nav lang={locale} />
       <main>{children}</main>
       <Footer lang={locale} />
+      <CookieNotice lang={locale} />
     </>
   )
 }
