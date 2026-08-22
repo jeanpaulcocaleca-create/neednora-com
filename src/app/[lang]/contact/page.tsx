@@ -14,10 +14,12 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
   const t = getTranslations(lang)
   const ct = t.contact
   const [state, setState] = useState<FormState>('idle')
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setState('loading')
+    setErrorMsg(null)
     const form = e.currentTarget
     const data = {
       name: (form.elements.namedItem('name') as HTMLInputElement).value,
@@ -32,7 +34,12 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      if (!res.ok) throw new Error()
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}))
+        setErrorMsg((json as { error?: string }).error ?? null)
+        setState('error')
+        return
+      }
       setState('success')
     } catch {
       setState('error')
@@ -140,7 +147,7 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
                   padding: '0.65rem 0.9rem', background: 'rgba(239,68,68,0.08)',
                   borderRadius: 'var(--r-sm)', border: '1px solid rgba(239,68,68,0.2)',
                 }}>
-                  {ct.errorMsg}
+                  {errorMsg ?? ct.errorMsg}
                 </p>
               )}
 
