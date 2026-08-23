@@ -17,7 +17,6 @@ export async function generateMetadata({
   }
 }
 
-const CONTACT_EMAIL = 'jeanpaulcocaleca@gmail.com'
 
 export default async function DataDeletion({
   params,
@@ -107,20 +106,16 @@ export default async function DataDeletion({
                   letterSpacing: '0.1em', textTransform: 'uppercase',
                   color: 'var(--accent)', marginBottom: '0.75rem',
                 }}>
-                  {es ? 'Solicitud por Correo Electrónico' : 'Email Request'}
+                  {es ? 'Solicitud por Formulario de Contacto' : 'Contact Form Request'}
                 </div>
                 <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', margin: '0 0 0.75rem' }}>
                   {es
-                    ? <>Envíe un correo electrónico a{' '}
-                      <a href={`mailto:${CONTACT_EMAIL}?subject=Solicitud de Eliminación de Datos — NORA`} style={{ color: 'var(--accent)' }}>
-                        {CONTACT_EMAIL}
-                      </a>{' '}
-                      con el asunto <strong style={{ color: 'var(--fg)' }}>&quot;Solicitud de Eliminación de Datos — NORA&quot;</strong>.</>
-                    : <>Send an email to{' '}
-                      <a href={`mailto:${CONTACT_EMAIL}?subject=Data Deletion Request — NORA`} style={{ color: 'var(--accent)' }}>
-                        {CONTACT_EMAIL}
-                      </a>{' '}
-                      with the subject line <strong style={{ color: 'var(--fg)' }}>&quot;Data Deletion Request — NORA&quot;</strong>.</>}
+                    ? <>Envíe su solicitud a través de nuestra{' '}
+                      <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>{' '}
+                      e incluya en el campo de asunto: <strong style={{ color: 'var(--fg)' }}>&quot;Solicitud de Eliminación de Datos — NORA&quot;</strong>.</>
+                    : <>Submit your request through our{' '}
+                      <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>{' '}
+                      and include in the subject field: <strong style={{ color: 'var(--fg)' }}>&quot;Data Deletion Request — NORA&quot;</strong>.</>}
                 </p>
                 <p style={{ color: 'var(--muted)', fontSize: '0.875rem', margin: 0, lineHeight: 1.65 }}>
                   {es ? 'Por favor incluya en su correo:' : 'Please include in your email:'}
@@ -138,18 +133,6 @@ export default async function DataDeletion({
                     <li>Whether you want partial deletion (specific data types) or complete account deletion</li>
                   </>}
                 </ul>
-              </div>
-
-              <div style={{ background: 'var(--raised)', border: '1px solid var(--rim)', borderRadius: 'var(--r)', padding: '1.25rem' }}>
-                <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.65 }}>
-                  {es
-                    ? <>También puede enviar su solicitud a través de nuestra{' '}
-                      <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de Contacto</Link>
-                      {' '}— mencione "solicitud de eliminación de datos" en su mensaje.</>
-                    : <>You may also submit your request through our{' '}
-                      <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>Contact page</Link>
-                      {' '}— please mention &quot;data deletion request&quot; in your message.</>}
-                </div>
               </div>
             </div>
 
@@ -231,11 +214,11 @@ export default async function DataDeletion({
             }}>
               <p style={{ fontSize: '0.9375rem', color: 'var(--muted)', margin: 0, lineHeight: 1.65 }}>
                 {es
-                  ? <>¿Tiene preguntas sobre la eliminación de datos? Contáctenos en{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>
+                  ? <>¿Tiene preguntas sobre la eliminación de datos?{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>Contáctenos a través de nuestra página de contacto</Link>
                     . Normalmente respondemos en 2 días hábiles.</>
-                  : <>Questions about data deletion? Contact us at{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>
+                  : <>Questions about data deletion?{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>Contact us through our contact page</Link>
                     . We typically respond within 2 business days.</>}
               </p>
             </div>

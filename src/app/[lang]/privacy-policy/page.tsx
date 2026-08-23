@@ -19,7 +19,6 @@ export async function generateMetadata({
 
 const EFFECTIVE_DATE_ES = '25 de julio de 2026'
 const EFFECTIVE_DATE_EN = 'July 25, 2026'
-const CONTACT_EMAIL = 'jeanpaulcocaleca@gmail.com'
 
 export default async function PrivacyPolicy({
   params,
@@ -186,10 +185,10 @@ export default async function PrivacyPolicy({
               </p>
               <p>
                 {es
-                  ? <>Ningún método de transmisión o almacenamiento es 100% seguro. Si cree que sus datos han sido comprometidos, contáctenos de inmediato en{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>.</>
-                  : <>No method of transmission or storage is 100% secure. If you believe your data has been compromised, please contact us immediately at{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>.</>}
+                  ? <>Ningún método de transmisión o almacenamiento es 100% seguro. Si cree que sus datos han sido comprometidos, contáctenos de inmediato a través de nuestra{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>.</>
+                  : <>No method of transmission or storage is 100% secure. If you believe your data has been compromised, please contact us immediately through our{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>.</>}
               </p>
             </Section>
 
@@ -214,12 +213,12 @@ export default async function PrivacyPolicy({
               </ul>
               <p>
                 {es
-                  ? <>Para ejercer cualquiera de estos derechos, contáctenos en{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>{' '}
+                  ? <>Para ejercer cualquiera de estos derechos, contáctenos a través de nuestra{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>{' '}
                     o use nuestra página de{' '}
                     <Link href={`/${lang}/data-deletion`} style={{ color: 'var(--accent)' }}>Solicitud de Eliminación de Datos</Link>.</>
-                  : <>To exercise any of these rights, contact us at{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>{' '}
+                  : <>To exercise any of these rights, contact us through our{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>{' '}
                     or use our{' '}
                     <Link href={`/${lang}/data-deletion`} style={{ color: 'var(--accent)' }}>Data Deletion Request</Link>{' '}page.</>}
               </p>
@@ -228,10 +227,10 @@ export default async function PrivacyPolicy({
             <Section title={es ? "8. Privacidad de Menores" : "8. Children's Privacy"}>
               <p>
                 {es
-                  ? <>NORA es un servicio empresa a empresa y no está dirigido a personas menores de 18 años. Si cree que un menor ha proporcionado información personal, contáctenos en{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>.</>
-                  : <>NORA is a business-to-business service and is not directed at individuals under 18 years of age. If you believe a child has provided personal information to us, please contact us at{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>.</>}
+                  ? <>NORA es un servicio empresa a empresa y no está dirigido a personas menores de 18 años. Si cree que un menor ha proporcionado información personal, contáctenos a través de nuestra{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>.</>
+                  : <>NORA is a business-to-business service and is not directed at individuals under 18 years of age. If you believe a child has provided personal information to us, please contact us through our{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>.</>}
               </p>
             </Section>
 
@@ -252,7 +251,7 @@ export default async function PrivacyPolicy({
               }}>
                 <div><strong style={{ color: 'var(--fg)' }}>Project NEED</strong></div>
                 <div>NORA {es ? 'Sistema Operativo Empresarial con IA' : 'AI Business Operating System'}</div>
-                <div>Email: <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a></div>
+                <div>{es ? 'Contacto: ' : 'Contact: '}<Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>{es ? 'Página de contacto' : 'Contact page'}</Link></div>
                 <div>Website: neednora.com</div>
               </div>
             </Section>

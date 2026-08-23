@@ -329,8 +329,7 @@ export const es = {
     },
     submit: 'Solicitar Acceso Anticipado',
     submitting: 'Enviando…',
-    errorMsg:
-      'Algo salió mal. Por favor, escríbenos directamente a jeanpaulcocaleca@gmail.com',
+    errorMsg: 'Algo salió mal. Por favor, inténtalo de nuevo o comunícate a través de nuestra página de contacto.',
     successTitle: 'Solicitud recibida.',
     successBody:
       'Gracias. Revisaremos tu información y nos comunicaremos contigo dentro de las 48 horas para discutir cómo NORA puede funcionar para tu negocio.',

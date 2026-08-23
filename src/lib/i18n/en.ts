@@ -329,7 +329,7 @@ export const en = {
     },
     submit: 'Request Early Access',
     submitting: 'Sending…',
-    errorMsg: 'Something went wrong. Please email us directly at jeanpaulcocaleca@gmail.com',
+    errorMsg: 'Something went wrong. Please try again or reach out through our contact page.',
     successTitle: 'Request received.',
     successBody:
       "Thank you. We'll review your details and be in touch within 48 hours to discuss how NORA can work for your business.",

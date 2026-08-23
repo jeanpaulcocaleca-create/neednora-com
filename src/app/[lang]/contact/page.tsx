@@ -2,10 +2,8 @@
 
 import { useState, use } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Mail } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { getTranslations, type Locale } from '@/lib/i18n'
-
-const CONTACT_EMAIL = 'jeanpaulcocaleca@gmail.com'
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
 
@@ -50,56 +48,28 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
     <div style={{ paddingTop: 'var(--nav-h)' }}>
       <div className="container">
         <div style={{ maxWidth: 560, margin: '0 auto', padding: '4rem 0 6rem' }}>
-          <div style={{ marginBottom: '3rem' }}>
+          <div style={{ marginBottom: '2.5rem' }}>
             <div className="eyebrow" style={{ marginBottom: '0.75rem' }}>{ct.title}</div>
-            <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 700, letterSpacing: '-0.025em', marginBottom: '0.75rem' }}>
+            <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 700, letterSpacing: '-0.025em', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
               {ct.headline}
             </h1>
-            <p style={{ color: 'var(--muted)', fontSize: '1rem', margin: 0, maxWidth: '45ch' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', margin: 0, maxWidth: '45ch', lineHeight: 1.65 }}>
               {ct.subhead}
             </p>
           </div>
 
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            style={{
-              display: 'flex', alignItems: 'center', gap: '0.9rem',
-              background: 'var(--surface)', border: '1px solid var(--rim)',
-              borderRadius: 'var(--r-lg)', padding: '1.1rem 1.25rem',
-              marginBottom: '2.5rem', transition: 'border-color var(--t)', textDecoration: 'none',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent-border)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--rim)')}
-          >
-            <div style={{
-              width: 36, height: 36, borderRadius: 'var(--r)',
-              background: 'var(--accent-10)', border: '1px solid var(--accent-border)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            }}>
-              <Mail size={16} color="var(--accent)" strokeWidth={1.75} />
-            </div>
-            <div>
-              <div style={{ fontSize: '0.8125rem', color: 'var(--subtle)', marginBottom: '0.15rem' }}>
-                {ct.directLabel}
-              </div>
-              <div style={{ fontSize: '0.9375rem', fontWeight: 500, color: 'var(--fg)' }}>
-                {CONTACT_EMAIL}
-              </div>
-            </div>
-          </a>
-
           {state === 'success' ? (
             <div style={{
-              background: 'var(--ok-10)', border: '1px solid rgba(16,185,129,0.25)',
+              background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)',
               borderRadius: 'var(--r-lg)', padding: '1.5rem', textAlign: 'center',
             }}>
-              <p style={{ color: 'var(--ok)', fontWeight: 500, fontSize: '0.9375rem', margin: '0 0 0.5rem' }}>
+              <p style={{ color: '#10B981', fontWeight: 500, fontSize: '0.9375rem', margin: '0 0 0.5rem' }}>
                 {ct.successTitle}
               </p>
-              <p style={{ color: 'var(--muted)', fontSize: '0.875rem', margin: 0 }}>{ct.successBody}</p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', margin: 0 }}>{ct.successBody}</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="contact-row">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                   <label htmlFor="c-name" style={labelStyle}>{ct.fields.name.label}</label>
@@ -123,7 +93,7 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
                 <label htmlFor="c-subject" style={labelStyle}>{ct.fields.subject.label}</label>
                 <select
                   id="c-subject" name="subject" required defaultValue=""
-                  style={{ ...fieldStyle, color: 'var(--fg)' }}
+                  style={{ ...fieldStyle, color: 'var(--text-primary)' }}
                 >
                   <option value="" disabled>{ct.fields.subject.placeholder}</option>
                   {ct.fields.subject.options.map(opt => (
@@ -143,7 +113,7 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
 
               {state === 'error' && (
                 <p role="alert" style={{
-                  fontSize: '0.875rem', color: 'var(--danger)', margin: 0,
+                  fontSize: '0.875rem', color: '#EF4444', margin: 0,
                   padding: '0.65rem 0.9rem', background: 'rgba(239,68,68,0.08)',
                   borderRadius: 'var(--r-sm)', border: '1px solid rgba(239,68,68,0.2)',
                 }}>
@@ -157,11 +127,11 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
                 style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                   gap: '0.4rem',
-                  background: state === 'loading' ? 'var(--subtle)' : 'var(--blue)',
-                  color: '#ffffff', fontWeight: 600, fontSize: '0.9375rem',
-                  padding: '0.75rem 1.4rem', borderRadius: 'var(--r)', border: 'none',
+                  background: state === 'loading' ? 'var(--text-tertiary)' : 'var(--cta-bg)',
+                  color: 'var(--cta-text)', fontWeight: 600, fontSize: '0.9375rem',
+                  padding: '0.75rem 1.4rem', borderRadius: 'var(--r-md)', border: 'none',
                   cursor: state === 'loading' ? 'wait' : 'pointer',
-                  transition: 'background var(--t)', marginTop: '0.25rem', alignSelf: 'flex-start',
+                  transition: 'background var(--dur-base)', marginTop: '0.25rem', alignSelf: 'flex-start',
                 }}
               >
                 {state === 'loading' ? ct.submitting : ct.submit}
@@ -170,8 +140,8 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
             </form>
           )}
 
-          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--rim)' }}>
-            <Link href={`/${lang}`} style={{ color: 'var(--muted)', fontSize: '0.875rem' }}>
+          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
+            <Link href={`/${lang}`} style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
               ← {lang === 'es' ? 'Volver a neednora.com' : 'Back to neednora.com'}
             </Link>
           </div>
@@ -188,12 +158,12 @@ export default function Contact({ params }: { params: Promise<{ lang: Locale }> 
 }
 
 const labelStyle: React.CSSProperties = {
-  fontSize: '0.8125rem', fontWeight: 500, color: 'var(--muted)', letterSpacing: '-0.01em',
+  fontSize: '0.8125rem', fontWeight: 500, color: 'var(--text-secondary)', letterSpacing: '-0.01em',
 }
 
 const fieldStyle: React.CSSProperties = {
-  background: 'var(--surface)', border: '1px solid var(--rim)',
-  borderRadius: 'var(--r)', color: 'var(--fg)',
+  background: 'var(--neutral-pure)', border: '1px solid var(--border)',
+  borderRadius: 'var(--r-md)', color: 'var(--text-primary)',
   fontSize: '0.9375rem', padding: '0.65rem 0.85rem',
-  width: '100%', outline: 'none', fontFamily: 'var(--font-sans)',
+  width: '100%', outline: 'none', fontFamily: 'var(--font-body)',
 }

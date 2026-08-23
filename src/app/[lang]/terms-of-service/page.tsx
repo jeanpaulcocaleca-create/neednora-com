@@ -19,7 +19,6 @@ export async function generateMetadata({
 
 const EFFECTIVE_DATE_ES = '25 de julio de 2026'
 const EFFECTIVE_DATE_EN = 'July 25, 2026'
-const CONTACT_EMAIL = 'jeanpaulcocaleca@gmail.com'
 
 export default async function TermsOfService({
   params,
@@ -74,10 +73,10 @@ export default async function TermsOfService({
               </p>
               <p>
                 {es
-                  ? <>Es responsable de mantener la seguridad de las credenciales de su cuenta y de toda la actividad que ocurra bajo su cuenta. Notifíquenos de inmediato en{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>{' '}si cree que su cuenta ha sido comprometida.</>
-                  : <>You are responsible for maintaining the security of your account credentials and for all activity that occurs under your account. Notify us immediately at{' '}
-                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a>{' '}if you believe your account has been compromised.</>}
+                  ? <>Es responsable de mantener la seguridad de las credenciales de su cuenta y de toda la actividad que ocurra bajo su cuenta. Notifíquenos de inmediato a través de nuestra{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>{' '}si cree que su cuenta ha sido comprometida.</>
+                  : <>You are responsible for maintaining the security of your account credentials and for all activity that occurs under your account. Notify us immediately through our{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>{' '}if you believe your account has been compromised.</>}
               </p>
             </Section>
 
@@ -247,7 +246,7 @@ export default async function TermsOfService({
                 fontFamily: 'var(--font-mono)', fontSize: '0.875rem', lineHeight: 1.8, color: 'var(--muted)',
               }}>
                 <div><strong style={{ color: 'var(--fg)' }}>Project NEED</strong></div>
-                <div>Email: <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--accent)' }}>{CONTACT_EMAIL}</a></div>
+                <div>{es ? 'Contacto: ' : 'Contact: '}<Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>{es ? 'Página de contacto' : 'Contact page'}</Link></div>
                 <div>Website: neednora.com</div>
               </div>
             </Section>
