@@ -60,12 +60,12 @@ export default async function DataDeletion({
     <div style={{ paddingTop: 'var(--nav-h)' }}>
       <div className="container">
         <div style={{ maxWidth: 720, margin: '0 auto', padding: '4rem 0 6rem' }}>
-          <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--rim)' }}>
+          <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
             <div className="eyebrow" style={{ marginBottom: '0.75rem' }}>Legal</div>
             <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', marginBottom: '0.75rem' }}>
               {es ? 'Instrucciones de Eliminación de Datos de Usuario' : 'User Data Deletion Instructions'}
             </h1>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', margin: 0 }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', margin: 0 }}>
               {es
                 ? 'Cómo solicitar la eliminación de sus datos de la plataforma NORA.'
                 : 'How to request the deletion of your data from the NORA platform.'}
@@ -73,14 +73,14 @@ export default async function DataDeletion({
           </div>
 
           <div style={{
-            background: 'var(--surface)', border: '1px solid var(--rim)',
-            borderRadius: 'var(--r)', padding: '1.1rem 1.25rem',
+            background: 'var(--bg-raised)', border: '1px solid var(--border)',
+            borderRadius: 'var(--r-md)', padding: '1.1rem 1.25rem',
             marginBottom: '2.5rem',
           }}>
-            <p style={{ fontSize: '0.9375rem', color: 'var(--muted)', margin: 0, lineHeight: 1.7 }}>
+            <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.7 }}>
               {es
-                ? <><strong style={{ color: 'var(--fg)' }}>Nota importante:</strong> Desconectar su cuenta de WhatsApp Business de NORA y solicitar la eliminación de datos son acciones separadas. Desconectar su cuenta detendrá el procesamiento futuro de mensajes, pero los datos operativos históricos ya almacenados en NORA permanecerán hasta que envíe una solicitud de eliminación formal. Se requiere una solicitud de eliminación por escrito para eliminar los datos almacenados. Podemos solicitar que verifique su identidad y autorización antes de procesar una solicitud de eliminación para confirmar que tiene autoridad sobre la cuenta empresarial en cuestión.</>
-                : <><strong style={{ color: 'var(--fg)' }}>Important note:</strong> Disconnecting your WhatsApp Business account from NORA and requesting data deletion are separate actions. Disconnecting your account stops future message processing, but historical operational data already stored in NORA will remain until you submit a formal deletion request. A written deletion request is required to remove stored data. We may ask you to verify your identity and authorization before processing a deletion request to confirm you have authority over the business account in question.</>}
+                ? <><strong style={{ color: 'var(--text-primary)' }}>Nota importante:</strong> Desconectar su cuenta de WhatsApp Business de NORA y solicitar la eliminación de datos son acciones separadas. Desconectar su cuenta detendrá el procesamiento futuro de mensajes, pero los datos operativos históricos ya almacenados en NORA permanecerán hasta que envíe una solicitud de eliminación formal. Se requiere una solicitud de eliminación por escrito para eliminar los datos almacenados. Podemos solicitar que verifique su identidad y autorización antes de procesar una solicitud de eliminación para confirmar que tiene autoridad sobre la cuenta empresarial en cuestión.</>
+                : <><strong style={{ color: 'var(--text-primary)' }}>Important note:</strong> Disconnecting your WhatsApp Business account from NORA and requesting data deletion are separate actions. Disconnecting your account stops future message processing, but historical operational data already stored in NORA will remain until you submit a formal deletion request. A written deletion request is required to remove stored data. We may ask you to verify your identity and authorization before processing a deletion request to confirm you have authority over the business account in question.</>}
             </p>
           </div>
 
@@ -88,39 +88,39 @@ export default async function DataDeletion({
 
             {/* How to request */}
             <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '1rem', color: 'var(--fg)' }}>
+              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '1rem', color: 'var(--text-primary)' }}>
                 {es ? 'Cómo Solicitar la Eliminación de Datos' : 'How to Request Data Deletion'}
               </h2>
-              <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: '1rem' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: '1rem' }}>
                 {es
                   ? 'Para solicitar la eliminación de sus datos de la plataforma NORA, contáctenos a través de cualquiera de los siguientes métodos:'
                   : 'To request the deletion of your data from the NORA platform, contact us using any of the following methods:'}
               </p>
 
               <div style={{
-                background: 'var(--surface)', border: '1px solid var(--rim)',
+                background: 'var(--bg-raised)', border: '1px solid var(--border)',
                 borderRadius: 'var(--r-lg)', padding: '1.5rem', marginBottom: '1rem',
               }}>
                 <div style={{
-                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem',
+                  fontFamily: 'var(--font-conversation)', fontSize: '0.7rem',
                   letterSpacing: '0.1em', textTransform: 'uppercase',
-                  color: 'var(--accent)', marginBottom: '0.75rem',
+                  color: 'var(--ind-primary)', marginBottom: '0.75rem',
                 }}>
                   {es ? 'Solicitud por Formulario de Contacto' : 'Contact Form Request'}
                 </div>
-                <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', margin: '0 0 0.75rem' }}>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', margin: '0 0 0.75rem' }}>
                   {es
                     ? <>Envíe su solicitud a través de nuestra{' '}
-                      <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>{' '}
-                      e incluya en el campo de asunto: <strong style={{ color: 'var(--fg)' }}>&quot;Solicitud de Eliminación de Datos — NORA&quot;</strong>.</>
+                      <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>página de contacto</Link>{' '}
+                      e incluya en el campo de asunto: <strong style={{ color: 'var(--text-primary)' }}>&quot;Solicitud de Eliminación de Datos — NORA&quot;</strong>.</>
                     : <>Submit your request through our{' '}
-                      <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>{' '}
-                      and include in the subject field: <strong style={{ color: 'var(--fg)' }}>&quot;Data Deletion Request — NORA&quot;</strong>.</>}
+                      <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>contact page</Link>{' '}
+                      and include in the subject field: <strong style={{ color: 'var(--text-primary)' }}>&quot;Data Deletion Request — NORA&quot;</strong>.</>}
                 </p>
-                <p style={{ color: 'var(--muted)', fontSize: '0.875rem', margin: 0, lineHeight: 1.65 }}>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', margin: 0, lineHeight: 1.65 }}>
                   {es ? 'Por favor incluya en su correo:' : 'Please include in your email:'}
                 </p>
-                <ul style={{ color: 'var(--muted)', fontSize: '0.875rem', lineHeight: 1.75, marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
+                <ul style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', lineHeight: 1.75, marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
                   {es ? <>
                     <li>El nombre de su empresa registrada en NORA</li>
                     <li>El número de teléfono de WhatsApp Business conectado a su cuenta</li>
@@ -138,17 +138,17 @@ export default async function DataDeletion({
 
             {/* What gets deleted */}
             <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--fg)' }}>
+              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--text-primary)' }}>
                 {es ? 'Qué Datos se Eliminan' : 'What Data Gets Deleted'}
               </h2>
-              <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: '1rem' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: '1rem' }}>
                 {es
                   ? 'Una solicitud de eliminación completa de datos eliminará:'
                   : 'A complete data deletion request will remove:'}
               </p>
               <div style={{
                 display: 'flex', flexDirection: 'column', gap: '0',
-                background: 'var(--surface)', border: '1px solid var(--rim)',
+                background: 'var(--bg-raised)', border: '1px solid var(--border)',
                 borderRadius: 'var(--r-lg)', overflow: 'hidden',
               }}>
                 {deletionItems.map((row, i, arr) => (
@@ -157,11 +157,11 @@ export default async function DataDeletion({
                     style={{
                       display: 'flex', flexDirection: 'column', gap: '0.2rem',
                       padding: '0.9rem 1.1rem',
-                      borderBottom: i < arr.length - 1 ? '1px solid var(--rim-faint)' : 'none',
+                      borderBottom: i < arr.length - 1 ? '1px solid var(--border-faint)' : 'none',
                     }}
                   >
-                    <div style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--fg)' }}>✓ {row.item}</div>
-                    <div style={{ fontSize: '0.8125rem', color: 'var(--muted)' }}>{row.desc}</div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-primary)' }}>✓ {row.item}</div>
+                    <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>{row.desc}</div>
                   </div>
                 ))}
               </div>
@@ -169,7 +169,7 @@ export default async function DataDeletion({
 
             {/* Timeline */}
             <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--fg)' }}>
+              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--text-primary)' }}>
                 {es ? 'Plazos' : 'Timeline'}
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -179,16 +179,16 @@ export default async function DataDeletion({
                     style={{
                       display: 'flex', gap: '1rem', alignItems: 'flex-start',
                       padding: '0.9rem 1.1rem',
-                      background: 'var(--surface)', border: '1px solid var(--rim)',
-                      borderRadius: 'var(--r)',
+                      background: 'var(--bg-raised)', border: '1px solid var(--border)',
+                      borderRadius: 'var(--r-md)',
                     }}
                   >
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--accent)', minWidth: 80, paddingTop: '0.05rem' }}>
+                    <div style={{ fontFamily: 'var(--font-conversation)', fontSize: '0.75rem', color: 'var(--ind-primary)', minWidth: 80, paddingTop: '0.05rem' }}>
                       {row.days}
                     </div>
                     <div>
-                      <div style={{ fontWeight: 500, fontSize: '0.875rem', color: 'var(--fg)', marginBottom: '0.2rem' }}>{row.label}</div>
-                      <div style={{ fontSize: '0.8125rem', color: 'var(--muted)' }}>{row.desc}</div>
+                      <div style={{ fontWeight: 500, fontSize: '0.875rem', color: 'var(--text-primary)', marginBottom: '0.2rem' }}>{row.label}</div>
+                      <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>{row.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -197,10 +197,10 @@ export default async function DataDeletion({
 
             {/* Exceptions */}
             <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--fg)' }}>
+              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--text-primary)' }}>
                 {es ? 'Excepciones' : 'Exceptions'}
               </h2>
-              <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', lineHeight: 1.75, margin: 0 }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.75, margin: 0 }}>
                 {es
                   ? 'Podemos conservar ciertos datos cuando la ley lo exija, para la prevención del fraude, para resolver disputas o para hacer cumplir nuestros acuerdos. Donde conservemos datos bajo una excepción legal, le notificaremos qué se conserva y por qué. No usaremos los datos conservados para ningún otro propósito.'
                   : 'We may retain certain data where required by law, for fraud prevention, to resolve disputes, or to enforce our agreements. Where we retain data under a legal exception, we will notify you of what is retained and why. We will not use retained data for any other purpose.'}
@@ -209,24 +209,24 @@ export default async function DataDeletion({
 
             {/* Questions */}
             <div style={{
-              background: 'var(--accent-10)', border: '1px solid var(--accent-border)',
-              borderRadius: 'var(--r)', padding: '1.25rem',
+              background: 'var(--ind-surface)', border: '1px solid var(--border)',
+              borderRadius: 'var(--r-md)', padding: '1.25rem',
             }}>
-              <p style={{ fontSize: '0.9375rem', color: 'var(--muted)', margin: 0, lineHeight: 1.65 }}>
+              <p style={{ fontSize: '0.9375rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.65 }}>
                 {es
                   ? <>¿Tiene preguntas sobre la eliminación de datos?{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>Contáctenos a través de nuestra página de contacto</Link>
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>Contáctenos a través de nuestra página de contacto</Link>
                     . Normalmente respondemos en 2 días hábiles.</>
                   : <>Questions about data deletion?{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>Contact us through our contact page</Link>
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>Contact us through our contact page</Link>
                     . We typically respond within 2 business days.</>}
               </p>
             </div>
 
           </div>
 
-          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--rim)' }}>
-            <Link href={`/${lang}`} style={{ color: 'var(--muted)', fontSize: '0.875rem' }}>
+          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
+            <Link href={`/${lang}`} style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
               ← {es ? 'Volver a neednora.com' : 'Back to neednora.com'}
             </Link>
           </div>

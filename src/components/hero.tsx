@@ -121,6 +121,27 @@ const CONVERSATIONS: Record<string, Message[]> = {
   ],
 }
 
+const CONVERSATIONS_ES: Record<string, Message[]> = {
+  hospitality: [
+    { from: 'nora', text: 'Buenos días Miguel. Prioridad hoy: unidades 7, 9 y 12 (salidas), luego 3 y 5. El huésped de la unidad 7 sale a las 11 AM. Empieza por ahí.', time: '7:14' },
+    { from: 'user', name: 'Miguel', text: 'Entendido.', time: '7:15', ticks: true },
+    { from: 'user', name: 'Miguel', text: 'Unidad 7 lista para inspección.', time: '8:32', ticks: true },
+    { from: 'nora', text: 'Registrado. Solicitud de inspección enviada a recepción. ¿Puedes pasar a la unidad 9 ahora?', time: '8:33' },
+  ],
+  painting: [
+    { from: 'user', name: 'Jake', text: 'Estamos en el trabajo de los Johnson.', time: '7:48', ticks: true },
+    { from: 'nora', text: 'Recibido. Equipo en sitio a las 7:48 AM. Preparación exterior, fachadas norte y oeste. Color: SW 7036. ¿Algún problema con los materiales?', time: '7:48' },
+    { from: 'user', name: 'Jake', text: 'Nos queda poco sellador.', time: '7:51', ticks: true },
+    { from: 'nora', text: 'Agregado a la lista de materiales. Verifico si Marco puede traerlo en el recorrido de la tarde. Confirmo antes de la 1 PM.', time: '7:51' },
+  ],
+  restaurant: [
+    { from: 'user', name: 'Chef Marcus', text: 'Especiales de esta noche: halibut al sartén, risotto de champiñones. Los retiran si se acaban.', time: '17:02', ticks: true },
+    { from: 'nora', text: 'Anotado. Ambos agregados al menú de esta noche. Meseros notificados para revisar antes de ofrecer. Te aviso si queda poco de alguno.', time: '17:02' },
+    { from: 'user', name: 'Chef Marcus', text: 'Quedan solo 3 porciones de halibut.', time: '19:47', ticks: true },
+    { from: 'nora', text: 'Alerta enviada al salón: 3 porciones. ¿Lo retiro del menú ahora?', time: '19:47' },
+  ],
+}
+
 const INDUSTRY_LABELS: Record<string, { en: string; es: string }> = {
   hospitality:  { en: 'Hospitality',  es: 'Hotelería' },
   painting:     { en: 'Painting',     es: 'Pintura' },
@@ -334,8 +355,9 @@ function NetworkViz({ active }: { active: string }) {
   )
 }
 
-function PhoneFrame({ active }: { active: string }) {
-  const messages = CONVERSATIONS[active] ?? CONVERSATIONS.hospitality
+function PhoneFrame({ active, lang }: { active: string; lang: Locale }) {
+  const convMap = lang === 'es' ? CONVERSATIONS_ES : CONVERSATIONS
+  const messages = convMap[active] ?? convMap.hospitality
 
   return (
     <div className="phone-device">
@@ -348,7 +370,7 @@ function PhoneFrame({ active }: { active: string }) {
             <div className="phone-wa-name">NORA Operations</div>
             <div className="phone-wa-status">
               <span className="phone-wa-status-dot" aria-hidden="true" />
-              Active
+              {lang === 'es' ? 'Activo' : 'Active'}
             </div>
           </div>
           <span className="phone-wa-dots" aria-hidden="true">&#8943;</span>
@@ -382,7 +404,7 @@ function PhoneFrame({ active }: { active: string }) {
           </AnimatePresence>
         </div>
         <div className="phone-wa-input-bar" aria-hidden="true">
-          <div className="phone-wa-input-pill">Message</div>
+          <div className="phone-wa-input-pill">{lang === 'es' ? 'Mensaje' : 'Message'}</div>
           <div className="phone-wa-send-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
               <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
@@ -554,7 +576,7 @@ export function Hero({ lang }: { lang: Locale }) {
 
             {/* Phone frame */}
             <div className="hero-phone-wrap">
-              <PhoneFrame active={active} />
+              <PhoneFrame active={active} lang={lang} />
             </div>
 
           </div>

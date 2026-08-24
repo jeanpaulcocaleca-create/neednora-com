@@ -32,19 +32,19 @@ export default async function PrivacyPolicy({
     <div style={{ paddingTop: 'var(--nav-h)' }}>
       <div className="container">
         <div style={{ maxWidth: 720, margin: '0 auto', padding: '4rem 0 6rem' }}>
-          <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--rim)' }}>
+          <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
             <div className="eyebrow" style={{ marginBottom: '0.75rem' }}>{es ? 'Legal' : 'Legal'}</div>
             <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', marginBottom: '0.75rem' }}>
               {es ? 'Política de Privacidad' : 'Privacy Policy'}
             </h1>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', margin: 0 }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', margin: 0 }}>
               {es
                 ? `Vigente desde: ${EFFECTIVE_DATE_ES} · Última actualización: ${EFFECTIVE_DATE_ES}`
                 : `Effective: ${EFFECTIVE_DATE_EN} · Last updated: ${EFFECTIVE_DATE_EN}`}
             </p>
           </div>
 
-          <p style={{ color: 'var(--muted)', fontSize: '1rem', marginBottom: '2.5rem' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '2.5rem' }}>
             {es
               ? 'Project NEED opera el Sistema Operativo Empresarial con IA NORA ("NORA", el "Servicio"). Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos la información sobre las empresas y personas que usan nuestro Servicio. Al usar NORA, usted acepta las prácticas descritas en esta política.'
               : 'Project NEED operates the NORA AI Business Operating System ("NORA", the "Service"). This Privacy Policy explains how we collect, use, disclose, and protect information about businesses and individuals who use our Service. By using NORA, you agree to the practices described in this policy.'}
@@ -186,9 +186,9 @@ export default async function PrivacyPolicy({
               <p>
                 {es
                   ? <>Ningún método de transmisión o almacenamiento es 100% seguro. Si cree que sus datos han sido comprometidos, contáctenos de inmediato a través de nuestra{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>.</>
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>página de contacto</Link>.</>
                   : <>No method of transmission or storage is 100% secure. If you believe your data has been compromised, please contact us immediately through our{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>.</>}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>contact page</Link>.</>}
               </p>
             </Section>
 
@@ -214,13 +214,13 @@ export default async function PrivacyPolicy({
               <p>
                 {es
                   ? <>Para ejercer cualquiera de estos derechos, contáctenos a través de nuestra{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>página de contacto</Link>{' '}
                     o use nuestra página de{' '}
-                    <Link href={`/${lang}/data-deletion`} style={{ color: 'var(--accent)' }}>Solicitud de Eliminación de Datos</Link>.</>
+                    <Link href={`/${lang}/data-deletion`} style={{ color: 'var(--ind-primary)' }}>Solicitud de Eliminación de Datos</Link>.</>
                   : <>To exercise any of these rights, contact us through our{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>{' '}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>contact page</Link>{' '}
                     or use our{' '}
-                    <Link href={`/${lang}/data-deletion`} style={{ color: 'var(--accent)' }}>Data Deletion Request</Link>{' '}page.</>}
+                    <Link href={`/${lang}/data-deletion`} style={{ color: 'var(--ind-primary)' }}>Data Deletion Request</Link>{' '}page.</>}
               </p>
             </Section>
 
@@ -228,9 +228,9 @@ export default async function PrivacyPolicy({
               <p>
                 {es
                   ? <>NORA es un servicio empresa a empresa y no está dirigido a personas menores de 18 años. Si cree que un menor ha proporcionado información personal, contáctenos a través de nuestra{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>.</>
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>página de contacto</Link>.</>
                   : <>NORA is a business-to-business service and is not directed at individuals under 18 years of age. If you believe a child has provided personal information to us, please contact us through our{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>.</>}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>contact page</Link>.</>}
               </p>
             </Section>
 
@@ -245,21 +245,21 @@ export default async function PrivacyPolicy({
             <Section title={es ? '10. Contacto' : '10. Contact'}>
               <p>{es ? 'Si tiene preguntas sobre esta Política de Privacidad o nuestras prácticas de datos, contáctenos:' : 'If you have questions about this Privacy Policy or our data practices, please contact us:'}</p>
               <div style={{
-                background: 'var(--surface)', border: '1px solid var(--rim)',
-                borderRadius: 'var(--r)', padding: '1.25rem',
-                fontFamily: 'var(--font-mono)', fontSize: '0.875rem', lineHeight: 1.8, color: 'var(--muted)',
+                background: 'var(--bg-raised)', border: '1px solid var(--border)',
+                borderRadius: 'var(--r-md)', padding: '1.25rem',
+                fontFamily: 'var(--font-conversation)', fontSize: '0.875rem', lineHeight: 1.8, color: 'var(--text-secondary)',
               }}>
-                <div><strong style={{ color: 'var(--fg)' }}>Project NEED</strong></div>
+                <div><strong style={{ color: 'var(--text-primary)' }}>Project NEED</strong></div>
                 <div>NORA {es ? 'Sistema Operativo Empresarial con IA' : 'AI Business Operating System'}</div>
-                <div>{es ? 'Contacto: ' : 'Contact: '}<Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>{es ? 'Página de contacto' : 'Contact page'}</Link></div>
+                <div>{es ? 'Contacto: ' : 'Contact: '}<Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>{es ? 'Página de contacto' : 'Contact page'}</Link></div>
                 <div>Website: neednora.com</div>
               </div>
             </Section>
 
           </div>
 
-          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--rim)' }}>
-            <Link href={`/${lang}`} style={{ color: 'var(--muted)', fontSize: '0.875rem' }}>
+          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
+            <Link href={`/${lang}`} style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
               ← {es ? 'Volver a neednora.com' : 'Back to neednora.com'}
             </Link>
           </div>
@@ -272,10 +272,10 @@ export default async function PrivacyPolicy({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--fg)' }}>
+      <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--text-primary)' }}>
         {title}
       </h2>
-      <div style={{ color: 'var(--muted)', fontSize: '0.9375rem', lineHeight: 1.75, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.75, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {children}
       </div>
     </div>
@@ -285,10 +285,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function SubSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--fg)', marginBottom: '0.4rem' }}>
+      <h3 style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
         {title}
       </h3>
-      <p style={{ margin: 0, color: 'var(--muted)' }}>{children}</p>
+      <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{children}</p>
     </div>
   )
 }

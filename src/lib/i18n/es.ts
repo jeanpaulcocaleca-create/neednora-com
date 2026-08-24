@@ -392,7 +392,7 @@ export const es = {
     submitting: 'Enviando…',
     successTitle: '¡Mensaje enviado!',
     successBody: 'Gracias por contactarnos. Te responderemos pronto.',
-    errorMsg: 'Algo salió mal. Por favor, envíanos un correo directamente.',
+    errorMsg: 'Algo salió mal. Por favor, inténtalo de nuevo.',
   },
 
   demo: {

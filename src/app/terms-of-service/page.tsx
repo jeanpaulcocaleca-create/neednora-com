@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
 export default function Page() {
-  redirect('/es/terms-of-service')
+  redirect('/en/terms-of-service')
 }

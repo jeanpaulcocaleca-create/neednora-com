@@ -32,19 +32,19 @@ export default async function TermsOfService({
     <div style={{ paddingTop: 'var(--nav-h)' }}>
       <div className="container">
         <div style={{ maxWidth: 720, margin: '0 auto', padding: '4rem 0 6rem' }}>
-          <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--rim)' }}>
+          <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
             <div className="eyebrow" style={{ marginBottom: '0.75rem' }}>Legal</div>
             <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', marginBottom: '0.75rem' }}>
               {es ? 'Términos de Servicio' : 'Terms of Service'}
             </h1>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9375rem', margin: 0 }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', margin: 0 }}>
               {es
                 ? `Vigente desde: ${EFFECTIVE_DATE_ES} · Última actualización: ${EFFECTIVE_DATE_ES}`
                 : `Effective: ${EFFECTIVE_DATE_EN} · Last updated: ${EFFECTIVE_DATE_EN}`}
             </p>
           </div>
 
-          <p style={{ color: 'var(--muted)', fontSize: '1rem', marginBottom: '2.5rem' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '2.5rem' }}>
             {es
               ? 'Estos Términos de Servicio ("Términos") rigen su acceso y uso de NORA, el Sistema Operativo Empresarial con IA proporcionado por Project NEED ("nosotros", "nos" o "Project NEED"). Al acceder o usar NORA, usted acepta estos Términos. Si no los acepta, no use el Servicio.'
               : 'These Terms of Service ("Terms") govern your access to and use of NORA, the AI Business Operating System provided by Project NEED ("we," "us," or "Project NEED"). By accessing or using NORA, you agree to these Terms. If you do not agree, do not use the Service.'}
@@ -74,9 +74,9 @@ export default async function TermsOfService({
               <p>
                 {es
                   ? <>Es responsable de mantener la seguridad de las credenciales de su cuenta y de toda la actividad que ocurra bajo su cuenta. Notifíquenos de inmediato a través de nuestra{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>página de contacto</Link>{' '}si cree que su cuenta ha sido comprometida.</>
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>página de contacto</Link>{' '}si cree que su cuenta ha sido comprometida.</>
                   : <>You are responsible for maintaining the security of your account credentials and for all activity that occurs under your account. Notify us immediately through our{' '}
-                    <Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>contact page</Link>{' '}if you believe your account has been compromised.</>}
+                    <Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>contact page</Link>{' '}if you believe your account has been compromised.</>}
               </p>
             </Section>
 
@@ -130,9 +130,9 @@ export default async function TermsOfService({
               <p>
                 {es
                   ? <>Usted conserva la propiedad de todos los datos y contenidos que proporciona a NORA. Al usar el Servicio, otorga a Project NEED una licencia limitada para procesar, almacenar y usar sus datos únicamente para prestarle el Servicio según se describe en nuestra{' '}
-                    <Link href={`/${lang}/privacy-policy`} style={{ color: 'var(--accent)' }}>Política de Privacidad</Link>.</>
+                    <Link href={`/${lang}/privacy-policy`} style={{ color: 'var(--ind-primary)' }}>Política de Privacidad</Link>.</>
                   : <>You retain ownership of all data and content you provide to NORA. By using the Service, you grant Project NEED a limited license to process, store, and use your data solely to provide the Service to you as described in our{' '}
-                    <Link href={`/${lang}/privacy-policy`} style={{ color: 'var(--accent)' }}>Privacy Policy</Link>.</>}
+                    <Link href={`/${lang}/privacy-policy`} style={{ color: 'var(--ind-primary)' }}>Privacy Policy</Link>.</>}
               </p>
               <p>
                 {es
@@ -241,20 +241,20 @@ export default async function TermsOfService({
             <Section title={es ? '15. Contacto' : '15. Contact'}>
               <p>{es ? 'Para preguntas sobre estos Términos, contáctenos en:' : 'For questions about these Terms, contact us at:'}</p>
               <div style={{
-                background: 'var(--surface)', border: '1px solid var(--rim)',
-                borderRadius: 'var(--r)', padding: '1.25rem',
-                fontFamily: 'var(--font-mono)', fontSize: '0.875rem', lineHeight: 1.8, color: 'var(--muted)',
+                background: 'var(--bg-raised)', border: '1px solid var(--border)',
+                borderRadius: 'var(--r-md)', padding: '1.25rem',
+                fontFamily: 'var(--font-conversation)', fontSize: '0.875rem', lineHeight: 1.8, color: 'var(--text-secondary)',
               }}>
-                <div><strong style={{ color: 'var(--fg)' }}>Project NEED</strong></div>
-                <div>{es ? 'Contacto: ' : 'Contact: '}<Link href={`/${lang}/contact`} style={{ color: 'var(--accent)' }}>{es ? 'Página de contacto' : 'Contact page'}</Link></div>
+                <div><strong style={{ color: 'var(--text-primary)' }}>Project NEED</strong></div>
+                <div>{es ? 'Contacto: ' : 'Contact: '}<Link href={`/${lang}/contact`} style={{ color: 'var(--ind-primary)' }}>{es ? 'Página de contacto' : 'Contact page'}</Link></div>
                 <div>Website: neednora.com</div>
               </div>
             </Section>
 
           </div>
 
-          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--rim)' }}>
-            <Link href={`/${lang}`} style={{ color: 'var(--muted)', fontSize: '0.875rem' }}>
+          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
+            <Link href={`/${lang}`} style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
               ← {es ? 'Volver a neednora.com' : 'Back to neednora.com'}
             </Link>
           </div>
@@ -267,10 +267,10 @@ export default async function TermsOfService({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--fg)' }}>
+      <h2 style={{ fontSize: '1.125rem', fontWeight: 600, letterSpacing: '-0.015em', marginBottom: '0.9rem', color: 'var(--text-primary)' }}>
         {title}
       </h2>
-      <div style={{ color: 'var(--muted)', fontSize: '0.9375rem', lineHeight: 1.75, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem', lineHeight: 1.75, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {children}
       </div>
     </div>

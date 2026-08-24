@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
 export default function Page() {
-  redirect('/es/privacy-policy')
+  redirect('/en/privacy-policy')
 }

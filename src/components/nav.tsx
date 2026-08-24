@@ -260,7 +260,7 @@ export function Nav({ lang }: { lang: Locale }) {
             aria-label={es ? 'Navegación principal' : 'Main navigation'}
             className="nora-nav__links"
           >
-            <a href="#how-it-works" className="nav-link">
+            <a href="#how-nora-works" className="nav-link">
               {es ? 'Cómo funciona' : 'How it works'}
             </a>
 
@@ -352,12 +352,6 @@ export function Nav({ lang }: { lang: Locale }) {
               )}
             </div>
 
-            <a href="#pricing" className="nav-link">
-              {es ? 'Precios' : 'Pricing'}
-            </a>
-            <a href="#about" className="nav-link">
-              {es ? 'Nosotros' : 'About'}
-            </a>
           </nav>
 
           {/* Zone 3: Actions */}
@@ -370,7 +364,7 @@ export function Nav({ lang }: { lang: Locale }) {
             </Link>
 
             <Link
-              href={`/${lang}`}
+              href={altPath}
               className="nora-nav__lang-switch"
               aria-label={`Switch to ${altLang === 'es' ? 'Español' : 'English'}`}
             >
@@ -438,7 +432,7 @@ export function Nav({ lang }: { lang: Locale }) {
           <>
             <nav className="nora-mobile-menu__body" aria-label={es ? 'Menú móvil' : 'Mobile menu'}>
               <a
-                href="#how-it-works"
+                href="#how-nora-works"
                 className="nora-mobile-menu__link"
                 onClick={() => setMobileOpen(false)}
               >
@@ -474,20 +468,6 @@ export function Nav({ lang }: { lang: Locale }) {
                 </div>
               ))}
 
-              <a
-                href="#pricing"
-                className="nora-mobile-menu__link"
-                onClick={() => setMobileOpen(false)}
-              >
-                {es ? 'Precios' : 'Pricing'}
-              </a>
-              <a
-                href="#about"
-                className="nora-mobile-menu__link"
-                onClick={() => setMobileOpen(false)}
-              >
-                {es ? 'Nosotros' : 'About'}
-              </a>
             </nav>
 
             <div className="nora-mobile-menu__footer">

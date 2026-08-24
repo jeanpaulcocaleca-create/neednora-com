@@ -1670,7 +1670,7 @@ img, svg { display: block; max-width: 100%; }
    ═══════════════════════════════════════════════════════════════ */
 
 .industry-shell {
-  padding-top: calc(var(--nav-height) + 80px);
+  padding-top: calc(var(--nav-h) + 80px);
   padding-bottom: 120px;
   min-height: 100dvh;
 }

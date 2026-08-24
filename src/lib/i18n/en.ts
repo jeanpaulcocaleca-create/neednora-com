@@ -392,7 +392,7 @@ export const en = {
     submitting: 'Sending…',
     successTitle: 'Message sent!',
     successBody: "Thank you for reaching out. We'll get back to you soon.",
-    errorMsg: 'Something went wrong. Please email us directly.',
+    errorMsg: 'Something went wrong. Please try again.',
   },
 
   demo: {
