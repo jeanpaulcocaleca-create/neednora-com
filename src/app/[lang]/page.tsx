@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations, type Locale } from '@/lib/i18n'
 import { Hero } from '@/components/hero'
 import { PeaceOfMind } from '@/components/peace-of-mind'
+import { SimpleMessage } from '@/components/simple-message'
 import { Accountability } from '@/components/accountability'
 import { ProductStory } from '@/components/product-story'
 import { DomainExplorer } from '@/components/domain-explorer'
@@ -21,6 +22,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
     <>
       <Hero lang={lang} />
       <PeaceOfMind lang={lang} />
+      <SimpleMessage lang={lang} />
       <Accountability lang={lang} />
       <TryNora lang={lang} />
       <ProductStory lang={lang} />

@@ -2427,3 +2427,239 @@ img, svg { display: block; max-width: 100%; }
     height: 440px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   SIMPLE MESSAGE SECTION
+   The cinematic WhatsApp moment — one exchange, NORA acts.
+   ═══════════════════════════════════════════════════════════════ */
+
+.simplemsg-section {
+  background: var(--bg);
+  position: relative;
+}
+
+.simplemsg-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 70% at 50% 50%,
+    rgba(var(--ind-rgb), 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.simplemsg-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.75rem;
+  position: relative;
+}
+
+/* Copy */
+.simplemsg-copy {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.simplemsg-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.25;
+  color: var(--text-primary);
+  max-width: 34ch;
+  text-align: center;
+  text-wrap: balance;
+  margin: 0;
+}
+
+/* Stage wrapper — constrains the chat card width */
+.simplemsg-stage {
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Chat window */
+.simplemsg-window {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-z4);
+}
+
+/* Top bar */
+.simplemsg-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  background: var(--dark-raised);
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.simplemsg-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--dark-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  flex-shrink: 0;
+}
+
+.simplemsg-bar-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.simplemsg-bar-info b {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  line-height: 1.3;
+}
+
+.simplemsg-bar-info span {
+  display: block;
+  font-size: var(--text-caption);
+  color: var(--dark-text-muted);
+  line-height: 1.3;
+}
+
+/* Messages body — fixed min-height prevents layout shift */
+.simplemsg-body {
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 256px;
+}
+
+/* Message bubbles */
+.simplemsg-bubble {
+  max-width: 82%;
+  border-radius: 18px;
+  padding: 0.7rem 0.95rem;
+  font-family: var(--font-conversation);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.simplemsg-bubble.employee {
+  background: var(--wa-sent);
+  color: var(--wa-text);
+  align-self: flex-end;
+  border-radius: 18px 4px 18px 18px;
+}
+
+.simplemsg-bubble.nora {
+  background: var(--dark-raised);
+  color: var(--dark-text);
+  align-self: flex-start;
+  border-radius: 4px 18px 18px 18px;
+  border-left: 2px solid var(--ind-primary);
+}
+
+.simplemsg-sender {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ind-primary);
+  display: block;
+  margin-bottom: 0.1rem;
+}
+
+.simplemsg-time {
+  font-size: 0.625rem;
+  color: var(--wa-time);
+  text-align: right;
+  display: block;
+  margin-top: 0.15rem;
+}
+
+/* NORA typing indicator */
+.simplemsg-typing {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.65rem 0.85rem;
+  background: var(--dark-raised);
+  border-radius: 4px 18px 18px 18px;
+  border-left: 2px solid var(--ind-primary);
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.simplemsg-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dark-text-muted);
+  animation: simplemsg-bounce 1.2s ease-in-out infinite;
+}
+
+.simplemsg-typing span:nth-child(2) { animation-delay: 0.2s; }
+.simplemsg-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes simplemsg-bounce {
+  0%, 80%, 100% { transform: scale(0.75); opacity: 0.5; }
+  40%           { transform: scale(1.15); opacity: 1; }
+}
+
+/* Operational confirmation chip */
+.simplemsg-chip {
+  align-self: flex-start;
+  background: rgba(16, 185, 129, 0.11);
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  color: #10B981;
+  border-radius: var(--r-pill);
+  padding: 0.3rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+/* Mobile — full-width card, slightly smaller type */
+@media (max-width: 600px) {
+  .simplemsg-stage {
+    max-width: 100%;
+  }
+
+  .simplemsg-bubble {
+    font-size: 0.875rem;
+    max-width: 88%;
+  }
+
+  .simplemsg-body {
+    min-height: 230px;
+  }
+}
+
+/* Reduced motion — all elements visible simultaneously, no animation */
+@media (prefers-reduced-motion: reduce) {
+  .simplemsg-typing span {
+    animation: none;
+    opacity: 0.7;
+    transform: none;
+  }
+}

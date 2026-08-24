@@ -172,6 +172,18 @@ export const en = {
     ],
   },
 
+  simpleMessage: {
+    eyebrow: 'NORA in Action',
+    headline: 'One message. NORA handles the rest.',
+    employeeName: 'José',
+    employeeRole: 'Team member',
+    employeeMessage: 'Good morning. Running 20 minutes late. Apologies.',
+    noraResponse: "Got it, José. I'll notify your supervisor. Let me know when you arrive and I'll send you your work list.",
+    confirmation: 'Supervisor notified ✓',
+    noraLabel: 'NORA',
+    time: '9:02 AM',
+  },
+
   domainExplorer: {
     eyebrow: 'What NORA Handles',
     headline: 'One platform. Every operation.',
