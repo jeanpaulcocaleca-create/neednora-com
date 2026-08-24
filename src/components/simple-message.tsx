@@ -5,12 +5,13 @@ import { motion, AnimatePresence, useInView, useReducedMotion } from 'motion/rea
 import { getTranslations, type Locale } from '@/lib/i18n'
 
 // Stage sequence:
-// 0 → empty window (establishes the interface)
-// 1 → employee message arrives
+// 0 → empty window   (interface establishes itself)
+// 1 → José's message arrives
 // 2 → NORA typing indicator
-// 3 → NORA response (typing exits)
-// 4 → operational confirmation chip
-// → rest, then reset to 0
+// 3 → NORA response  (typing exits)
+// 4 → chip: action taken (supervisor informed)
+// 5 → chip: NORA owns the follow-up
+// → rest → reset to 0
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
 
@@ -23,7 +24,7 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
 
   useEffect(() => {
     if (reduced) {
-      setStage(4)
+      setStage(5)
       return
     }
     if (!inView) {
@@ -36,14 +37,15 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
 
     const run = () => {
       ids.push(setTimeout(() => setStage(1), 1200))
-      ids.push(setTimeout(() => setStage(2), 2100))
-      ids.push(setTimeout(() => setStage(3), 3700))
-      ids.push(setTimeout(() => setStage(4), 6400))
+      ids.push(setTimeout(() => setStage(2), 2000))
+      ids.push(setTimeout(() => setStage(3), 3600))
+      ids.push(setTimeout(() => setStage(4), 6300))
+      ids.push(setTimeout(() => setStage(5), 7800))
       ids.push(
         setTimeout(() => {
           setStage(0)
           loopId = setTimeout(run, 400)
-        }, 9000),
+        }, 10500),
       )
     }
 
@@ -55,31 +57,45 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
     }
   }, [inView, reduced])
 
-  const showEmpMsg = stage >= 1
+  const showEmpMsg    = stage >= 1
   const showNoraTyping = stage === 2
-  const showNoraMsg = stage >= 3
-  const showChip = stage >= 4
+  const showNoraMsg   = stage >= 3
+  const showChip      = stage >= 4
+  const showChip2     = stage >= 5
+
+  // Entrance transition — instant for reduced motion users
+  const enterDur = reduced ? 0 : undefined
 
   return (
     <section ref={sectionRef} className="section simplemsg-section">
       <div className="simplemsg-glow" aria-hidden="true" />
 
       <div className="container simplemsg-inner">
-        {/* Framing copy — intentionally minimal */}
-        <div className="simplemsg-copy">
+
+        {/* Left column — framing copy, quiet */}
+        <motion.div
+          className="simplemsg-copy"
+          initial={{ opacity: 0, y: 14 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+          transition={{ duration: enterDur ?? 0.42, ease: EASE_OUT }}
+        >
           <div className="eyebrow-light">{sm.eyebrow}</div>
           <p className="simplemsg-headline">{sm.headline}</p>
-        </div>
+        </motion.div>
 
-        {/* Chat stage */}
-        <div
+        {/* Right column — conversation card, protagonist */}
+        <motion.div
           className="simplemsg-stage"
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: enterDur ?? 0.55, delay: reduced ? 0 : 0.1, ease: EASE_OUT }}
           aria-label={sm.headline}
           aria-live="polite"
           aria-atomic="false"
         >
           <div className="simplemsg-window">
-            {/* Top bar — establishes the conversation context */}
+
+            {/* Top bar */}
             <div className="simplemsg-bar">
               <div className="simplemsg-avatar" aria-hidden="true">
                 {sm.employeeName.charAt(0)}
@@ -92,6 +108,8 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
 
             {/* Messages */}
             <div className="simplemsg-body">
+
+              {/* Employee message */}
               <AnimatePresence>
                 {showEmpMsg && (
                   <motion.div
@@ -110,6 +128,7 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
                 )}
               </AnimatePresence>
 
+              {/* NORA typing indicator */}
               <AnimatePresence>
                 {showNoraTyping && (
                   <motion.div
@@ -126,6 +145,7 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
                 )}
               </AnimatePresence>
 
+              {/* NORA response */}
               <AnimatePresence>
                 {showNoraMsg && (
                   <motion.div
@@ -144,6 +164,7 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
                 )}
               </AnimatePresence>
 
+              {/* Chip 1 — action taken */}
               <AnimatePresence>
                 {showChip && (
                   <motion.div
@@ -158,9 +179,27 @@ export function SimpleMessage({ lang }: { lang: Locale }) {
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* Chip 2 — NORA owns the follow-up */}
+              <AnimatePresence>
+                {showChip2 && (
+                  <motion.div
+                    key="chip2"
+                    className="simplemsg-chip simplemsg-chip-amber"
+                    initial={{ opacity: 0, y: 5, scale: 0.93 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0.14 } }}
+                    transition={{ duration: 0.28, delay: 0.08, ease: EASE_OUT }}
+                  >
+                    {sm.confirmation2}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
             </div>
           </div>
-        </div>
+        </motion.div>
+
       </div>
     </section>
   )

@@ -2434,55 +2434,57 @@ img, svg { display: block; max-width: 100%; }
    ═══════════════════════════════════════════════════════════════ */
 
 .simplemsg-section {
+  padding: 4.5rem 0;     /* tighter than --section-v; card provides presence */
   background: var(--bg);
   position: relative;
+  overflow: hidden;
 }
 
 .simplemsg-glow {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse 55% 70% at 50% 50%,
+    ellipse 60% 80% at 60% 50%,
     rgba(var(--ind-rgb), 0.05) 0%,
     transparent 70%
   );
   pointer-events: none;
 }
 
+/* Two-column layout: copy left, card right */
 .simplemsg-inner {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1.65fr;
+  gap: 3.5rem;
   align-items: center;
-  gap: 2.75rem;
   position: relative;
 }
 
-/* Copy */
+/* Left column — framing copy, left-aligned, quiet */
 .simplemsg-copy {
-  text-align: center;
+  text-align: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
+  align-items: flex-start;
+  gap: 0.85rem;
 }
 
 .simplemsg-headline {
   font-family: var(--font-display);
-  font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
   font-weight: 700;
   letter-spacing: -0.022em;
-  line-height: 1.25;
+  line-height: 1.3;
   color: var(--text-primary);
-  max-width: 34ch;
-  text-align: center;
+  max-width: 24ch;
+  text-align: left;
   text-wrap: balance;
   margin: 0;
 }
 
-/* Stage wrapper — constrains the chat card width */
+/* Right column — card fills available width */
 .simplemsg-stage {
   width: 100%;
-  max-width: 440px;
 }
 
 /* Chat window */
@@ -2498,22 +2500,22 @@ img, svg { display: block; max-width: 100%; }
 .simplemsg-bar {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.85rem 1rem;
+  gap: 0.7rem;
+  padding: 0.9rem 1.1rem;
   background: var(--dark-raised);
   border-bottom: 1px solid var(--dark-border);
 }
 
 .simplemsg-avatar {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid var(--dark-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--dark-text);
   flex-shrink: 0;
@@ -2526,7 +2528,7 @@ img, svg { display: block; max-width: 100%; }
 
 .simplemsg-bar-info b {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--dark-text);
   line-height: 1.3;
@@ -2539,22 +2541,22 @@ img, svg { display: block; max-width: 100%; }
   line-height: 1.3;
 }
 
-/* Messages body — fixed min-height prevents layout shift */
+/* Messages body — min-height holds final state without layout shift */
 .simplemsg-body {
-  padding: 1.25rem 1rem;
+  padding: 1.35rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  min-height: 256px;
+  gap: 0.8rem;
+  min-height: 320px;
 }
 
 /* Message bubbles */
 .simplemsg-bubble {
-  max-width: 82%;
+  max-width: 78%;
   border-radius: 18px;
-  padding: 0.7rem 0.95rem;
+  padding: 0.75rem 1rem;
   font-family: var(--font-conversation);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.5;
   display: flex;
   flex-direction: column;
@@ -2600,7 +2602,7 @@ img, svg { display: block; max-width: 100%; }
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 0.65rem 0.85rem;
+  padding: 0.7rem 0.9rem;
   background: var(--dark-raised);
   border-radius: 4px 18px 18px 18px;
   border-left: 2px solid var(--ind-primary);
@@ -2624,14 +2626,14 @@ img, svg { display: block; max-width: 100%; }
   40%           { transform: scale(1.15); opacity: 1; }
 }
 
-/* Operational confirmation chip */
+/* Operational status chips */
 .simplemsg-chip {
   align-self: flex-start;
   background: rgba(16, 185, 129, 0.11);
   border: 1px solid rgba(16, 185, 129, 0.24);
   color: #10B981;
   border-radius: var(--r-pill);
-  padding: 0.3rem 0.9rem;
+  padding: 0.32rem 0.9rem;
   font-family: var(--font-body);
   font-size: 0.8125rem;
   font-weight: 600;
@@ -2639,23 +2641,46 @@ img, svg { display: block; max-width: 100%; }
   line-height: 1.4;
 }
 
-/* Mobile — full-width card, slightly smaller type */
-@media (max-width: 600px) {
-  .simplemsg-stage {
+/* Amber variant — pending / follow-up state */
+.simplemsg-chip-amber {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.22);
+  color: #D97706;
+}
+
+/* Mobile — stack columns, full-width card, centered copy */
+@media (max-width: 767px) {
+  .simplemsg-section {
+    padding: 3.5rem 0;
+  }
+
+  .simplemsg-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .simplemsg-copy {
+    text-align: center;
+    align-items: center;
+  }
+
+  .simplemsg-headline {
+    text-align: center;
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
     max-width: 100%;
   }
 
   .simplemsg-bubble {
-    font-size: 0.875rem;
-    max-width: 88%;
+    font-size: 0.9375rem;
+    max-width: 86%;
   }
 
   .simplemsg-body {
-    min-height: 230px;
+    min-height: 285px;
   }
 }
 
-/* Reduced motion — all elements visible simultaneously, no animation */
+/* Reduced motion — dots stop; all states visible simultaneously via JS */
 @media (prefers-reduced-motion: reduce) {
   .simplemsg-typing span {
     animation: none;

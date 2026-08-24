@@ -180,6 +180,7 @@ export const es = {
     employeeMessage: 'Buenos días. Voy 20 minutos tarde. Disculpas.',
     noraResponse: 'Gracias, José. Le aviso a su supervisor. Avíseme cuando llegue para enviarle su lista de trabajo.',
     confirmation: 'Supervisor informado ✓',
+    confirmation2: 'Llegada pendiente · NORA dará seguimiento',
     noraLabel: 'NORA',
     time: '9:02 AM',
   },
