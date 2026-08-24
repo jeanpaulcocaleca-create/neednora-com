@@ -369,10 +369,10 @@ export const en = {
     title: 'Contact',
     metaTitle: 'Contact',
     headline: 'Contact us',
-    subhead: 'Write to us directly or use the form below.',
+    subhead: 'For general questions, privacy inquiries, or technical support.',
     directLabel: 'Direct contact',
     directNote:
-      'For questions about early access, data privacy, or technical support, email us:',
+      'For questions about data privacy or technical support, email us:',
     formHeadline: 'Send us a message',
     fields: {
       name: { label: 'Your name', placeholder: 'Andrés García' },
@@ -381,7 +381,6 @@ export const en = {
         label: 'Subject',
         placeholder: 'Select a subject',
         options: [
-          'Early Access Request',
           'Data privacy question',
           'Technical inquiry',
           'Other',
@@ -394,5 +393,74 @@ export const en = {
     successTitle: 'Message sent!',
     successBody: "Thank you for reaching out. We'll get back to you soon.",
     errorMsg: 'Something went wrong. Please email us directly.',
+  },
+
+  demo: {
+    metaTitle: 'Request a Demo',
+    eyebrow: 'Request a Demo',
+    headline: 'See NORA in action.',
+    subhead:
+      "Tell us about your business. We'll show you how NORA turns WhatsApp conversations into structured operations — built around the way your team already works.",
+    fields: {
+      name: { label: 'Your name', placeholder: 'Carlos Morales' },
+      email: { label: 'Work email', placeholder: 'carlos@yourbusiness.com' },
+      whatsapp: {
+        label: 'WhatsApp number',
+        placeholder: '+1 (404) 555-0100',
+        hint: 'The number your business uses on WhatsApp',
+      },
+      businessName: { label: 'Business name', placeholder: 'Basecamp Monteverde' },
+      industry: {
+        label: 'Industry',
+        placeholder: 'Select your industry',
+        options: [
+          'Hotels & Lodges',
+          'Restaurants',
+          'Painting & Trades',
+          'Property Management',
+          'Field Services & Maintenance',
+          'Construction',
+          'Other',
+        ],
+      },
+      teamSize: {
+        label: 'Team size',
+        optional: '(optional)',
+        placeholder: 'Select a range',
+        options: ['Just me', '2–5', '6–15', '16–50', '51–100', '100+'],
+      },
+      message: {
+        label: 'What would you like NORA to help with?',
+        optional: '(optional)',
+        placeholder:
+          'Describe your current operations or the biggest challenge your team faces.',
+      },
+    },
+    submit: 'Request a demo',
+    submitting: 'Sending…',
+    successTitle: "You're on our radar.",
+    successBody:
+      "We received your request. Someone from the NORA team will review it and reach out directly on WhatsApp or email. No account has been created yet.",
+    successBack: '← Back to neednora.com',
+    errorMsg: 'Something went wrong. Please try again or reach out through our contact page.',
+    error429: 'Too many requests. Please wait a few minutes and try again.',
+    error400: 'Please check your details and try again.',
+    next: {
+      title: 'What happens next',
+      steps: [
+        {
+          label: 'We review your request',
+          body: "A real person from the NORA team reads what you've shared and evaluates the fit.",
+        },
+        {
+          label: 'We reach out directly',
+          body: 'We contact you on WhatsApp or email to schedule a short walkthrough.',
+        },
+        {
+          label: 'You see NORA live',
+          body: 'We show you exactly how NORA works with your business type — no generic demo.',
+        },
+      ],
+    },
   },
 }

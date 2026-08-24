@@ -25,7 +25,7 @@ export default async function PaintingPage({
             ? 'NORA convierte WhatsApp en tu columna vertebral operativa — órdenes de trabajo, fotos de sitio, solicitudes de gastos y actualizaciones de progreso. Estructurado.'
             : 'NORA turns WhatsApp into your operational backbone — work orders, site photos, expense requests, and progress updates. Structured.'}
         </p>
-        <Link href={`/${lang}/contact`} className="btn btn-primary industry-shell__cta">
+        <Link href={`/${lang}/demo`} className="btn btn-primary industry-shell__cta">
           {es ? 'Solicitar una demo' : 'Request a demo'}
         </Link>
       </section>

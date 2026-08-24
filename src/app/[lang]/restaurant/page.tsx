@@ -25,7 +25,7 @@ export default async function RestaurantPage({
             ? 'NORA captura cada cambio de turno, solicitud de insumos y reporte de mantenimiento desde WhatsApp — y los convierte en operaciones organizadas.'
             : 'NORA captures every shift handoff, supply request, and maintenance report from WhatsApp — and turns them into organized operations.'}
         </p>
-        <Link href={`/${lang}/contact`} className="btn btn-primary industry-shell__cta">
+        <Link href={`/${lang}/demo`} className="btn btn-primary industry-shell__cta">
           {es ? 'Solicitar una demo' : 'Request a demo'}
         </Link>
       </section>

@@ -8,17 +8,16 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json()
-
-    if (!body.name || !body.email || !body.message) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-    }
-
     const type = typeof body.type === 'string' ? body.type : 'contact'
 
-    // ── Contact / demo form → BE-12 ─────────────────────────────────────────
-    // All industry pages ("Request a demo") link here. This is the live NORA
-    // lead-capture path: Browser → Next.js /api/contact (server) → NORA backend.
-    if (type === 'contact') {
+    // ── Demo request funnel → BE-12 (structured lead capture) ──────────────
+    // The dedicated /demo page posts here with type:'demo_request'. All five
+    // required fields are validated before the backend call; message is optional.
+    if (type === 'demo_request') {
+      if (!body.name || !body.email || !body.whatsappNumber || !body.businessName || !body.industry) {
+        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+      }
+
       if (!NORA_API_URL || !NORA_DEMO_API_SECRET) {
         console.error('[contact] NORA_API_URL or NORA_DEMO_API_SECRET not configured')
         return NextResponse.json(
@@ -26,11 +25,6 @@ export async function POST(req: NextRequest) {
           { status: 503 },
         )
       }
-
-      // Subject is not a BE-12 field; prepend it so the team sees context.
-      const subject = typeof body.subject === 'string' ? body.subject.trim() : ''
-      const rawMsg  = (body.message as string).trim()
-      const message = subject ? `[${subject}]\n\n${rawMsg}` : rawMsg
 
       let res: Response
       try {
@@ -41,10 +35,14 @@ export async function POST(req: NextRequest) {
             'x-nora-api-secret': NORA_DEMO_API_SECRET,
           },
           body: JSON.stringify({
-            email:     (body.email as string).trim(),
-            firstName: (body.name  as string).trim() || undefined,
-            message:   message || undefined,
-            source:    'website_contact_form',
+            email:          (body.email as string).trim(),
+            firstName:      (body.name as string).trim() || undefined,
+            companyName:    typeof body.businessName === 'string' ? body.businessName.trim() || undefined : undefined,
+            industryType:   typeof body.industry === 'string' ? body.industry.trim() || undefined : undefined,
+            employeeCount:  typeof body.teamSize === 'string' ? body.teamSize.trim() || undefined : undefined,
+            whatsappNumber: typeof body.whatsappNumber === 'string' ? body.whatsappNumber.trim() || undefined : undefined,
+            message:        typeof body.message === 'string' ? body.message.trim() || undefined : undefined,
+            source:         'website_demo_page',
           }),
         })
       } catch (err) {
@@ -68,7 +66,82 @@ export async function POST(req: NextRequest) {
         )
       }
       if (res.status === 401) {
-        // Integration misconfiguration — never expose secret details to the browser.
+        console.error('[contact] NORA backend rejected API secret — check NORA_DEMO_API_SECRET in Vercel env vars')
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable.' },
+          { status: 500 },
+        )
+      }
+      if (!res.ok) {
+        console.error(`[contact] NORA backend returned unexpected status: ${res.status}`)
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable. Please try again shortly.' },
+          { status: 503 },
+        )
+      }
+
+      return NextResponse.json({ ok: true }, { status: 200 })
+    }
+
+    // ── Shared validation for all remaining types ───────────────────────────
+    if (!body.name || !body.email || !body.message) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    // ── General contact inquiry → BE-12.2 (notification-only, no DB record) ───
+    // The /contact page routes here. Because this endpoint has no database
+    // fallback, a notification failure propagates as 5xx — the website must not
+    // return ok:true on any non-2xx response from this backend path.
+    if (type === 'contact') {
+      if (!body.subject) {
+        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+      }
+
+      if (!NORA_API_URL || !NORA_DEMO_API_SECRET) {
+        console.error('[contact] NORA_API_URL or NORA_DEMO_API_SECRET not configured')
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable.' },
+          { status: 503 },
+        )
+      }
+
+      let res: Response
+      try {
+        res = await fetch(`${NORA_API_URL}/public/contact-inquiry`, {
+          method:  'POST',
+          headers: {
+            'Content-Type':      'application/json',
+            'x-nora-api-secret': NORA_DEMO_API_SECRET,
+          },
+          body: JSON.stringify({
+            name:    (body.name    as string).trim(),
+            email:   (body.email   as string).trim(),
+            subject: (body.subject as string).trim(),
+            message: (body.message as string).trim(),
+            source:  'website_contact_form',
+          }),
+        })
+      } catch (err) {
+        console.error('[contact] Network error reaching NORA backend:', String(err))
+        return NextResponse.json(
+          { error: 'Service temporarily unavailable. Please try again shortly.' },
+          { status: 503 },
+        )
+      }
+
+      if (res.status === 429) {
+        return NextResponse.json(
+          { error: 'Too many requests. Please wait a few minutes before trying again.' },
+          { status: 429 },
+        )
+      }
+      if (res.status === 400) {
+        return NextResponse.json(
+          { error: 'Invalid submission. Please check your details and try again.' },
+          { status: 400 },
+        )
+      }
+      if (res.status === 401) {
         console.error('[contact] NORA backend rejected API secret — check NORA_DEMO_API_SECRET in Vercel env vars')
         return NextResponse.json(
           { error: 'Service temporarily unavailable.' },

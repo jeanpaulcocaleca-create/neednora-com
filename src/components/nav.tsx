@@ -363,7 +363,7 @@ export function Nav({ lang }: { lang: Locale }) {
           {/* Zone 3: Actions */}
           <div className="nora-nav__actions">
             <Link
-              href={`/${lang}/contact`}
+              href={`/${lang}/demo`}
               className="btn btn-ghost nora-nav__demo-cta"
             >
               {es ? 'Solicitar demo' : 'Request a demo'}
@@ -492,7 +492,7 @@ export function Nav({ lang }: { lang: Locale }) {
 
             <div className="nora-mobile-menu__footer">
               <Link
-                href={`/${lang}/contact`}
+                href={`/${lang}/demo`}
                 className="btn btn-ghost nora-mobile-menu__cta"
                 onClick={() => setMobileOpen(false)}
               >

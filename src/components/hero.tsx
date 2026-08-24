@@ -508,13 +508,13 @@ export function Hero({ lang }: { lang: Locale }) {
                 >
                   {copy.ctaPrimary}
                 </a>
-                <a href={`/${lang}#early-access`} className="btn btn-ghost hero-cta-ghost">
+                <a href={`/${lang}/demo`} className="btn btn-ghost hero-cta-ghost">
                   {copy.ctaDemo}
                 </a>
               </>
             ) : (
               <>
-                <a href={`/${lang}#early-access`} className="btn btn-primary hero-cta-primary">
+                <a href={`/${lang}/demo`} className="btn btn-primary hero-cta-primary">
                   {copy.ctaDemo}
                 </a>
                 <button

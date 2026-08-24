@@ -369,10 +369,10 @@ export const es = {
     title: 'Contacto',
     metaTitle: 'Contacto',
     headline: 'Contáctanos',
-    subhead: 'Escríbenos directamente o usa el formulario a continuación.',
+    subhead: 'Para consultas generales, preguntas de privacidad o soporte técnico.',
     directLabel: 'Contacto directo',
     directNote:
-      'Para preguntas sobre acceso anticipado, privacidad de datos o soporte técnico, envíanos un correo:',
+      'Para preguntas sobre privacidad de datos o soporte técnico, envíanos un correo:',
     formHeadline: 'Envíanos un mensaje',
     fields: {
       name: { label: 'Tu nombre', placeholder: 'Andrés García' },
@@ -381,7 +381,6 @@ export const es = {
         label: 'Asunto',
         placeholder: 'Selecciona un asunto',
         options: [
-          'Solicitud de Acceso Anticipado',
           'Pregunta sobre privacidad de datos',
           'Consulta técnica',
           'Otro',
@@ -394,5 +393,75 @@ export const es = {
     successTitle: '¡Mensaje enviado!',
     successBody: 'Gracias por contactarnos. Te responderemos pronto.',
     errorMsg: 'Algo salió mal. Por favor, envíanos un correo directamente.',
+  },
+
+  demo: {
+    metaTitle: 'Solicitar una Demo',
+    eyebrow: 'Solicitar una Demo',
+    headline: 'Ve NORA en acción.',
+    subhead:
+      'Cuéntanos sobre tu negocio. Te mostramos cómo NORA convierte las conversaciones de WhatsApp en operaciones estructuradas — adaptadas a la forma en que tu equipo ya trabaja.',
+    fields: {
+      name: { label: 'Tu nombre', placeholder: 'Carlos Morales' },
+      email: { label: 'Correo de trabajo', placeholder: 'carlos@tunegocio.com' },
+      whatsapp: {
+        label: 'Número de WhatsApp',
+        placeholder: '+506 8888-0000',
+        hint: 'El número que usa tu negocio en WhatsApp',
+      },
+      businessName: { label: 'Nombre del negocio', placeholder: 'Basecamp Monteverde' },
+      industry: {
+        label: 'Industria',
+        placeholder: 'Selecciona tu industria',
+        options: [
+          'Hoteles y Lodges',
+          'Restaurantes',
+          'Pintura y Oficios',
+          'Administración de Propiedades',
+          'Servicios de Campo y Mantenimiento',
+          'Construcción',
+          'Otro',
+        ],
+      },
+      teamSize: {
+        label: 'Tamaño del equipo',
+        optional: '(opcional)',
+        placeholder: 'Selecciona un rango',
+        options: ['Solo yo', '2–5', '6–15', '16–50', '51–100', '100+'],
+      },
+      message: {
+        label: '¿En qué te gustaría que NORA te ayudara?',
+        optional: '(opcional)',
+        placeholder:
+          'Describe tus operaciones actuales o el mayor desafío que enfrenta tu equipo.',
+      },
+    },
+    submit: 'Solicitar una demo',
+    submitting: 'Enviando…',
+    successTitle: 'Estás en nuestro radar.',
+    successBody:
+      'Recibimos tu solicitud. Alguien del equipo de NORA la revisará y se comunicará contigo directamente por WhatsApp o correo. Aún no se ha creado ninguna cuenta.',
+    successBack: '← Volver a neednora.com',
+    errorMsg:
+      'Algo salió mal. Por favor, inténtalo de nuevo o contáctanos a través de nuestra página de contacto.',
+    error429: 'Demasiadas solicitudes. Por favor, espera unos minutos y vuelve a intentarlo.',
+    error400: 'Por favor revisa tus datos e intenta de nuevo.',
+    next: {
+      title: 'Qué pasa a continuación',
+      steps: [
+        {
+          label: 'Revisamos tu solicitud',
+          body: 'Una persona real del equipo de NORA lee lo que has compartido y evalúa la compatibilidad.',
+        },
+        {
+          label: 'Nos comunicamos contigo',
+          body: 'Te contactamos por WhatsApp o correo para programar una demo breve.',
+        },
+        {
+          label: 'Ves NORA en vivo',
+          body: 'Te mostramos exactamente cómo funciona NORA para tu tipo de negocio — sin demos genéricas.',
+        },
+      ],
+    },
   },
 }

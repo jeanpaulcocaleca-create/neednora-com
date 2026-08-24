@@ -25,7 +25,7 @@ export default async function HospitalityPage({
             ? 'NORA convierte las conversaciones de WhatsApp en operaciones estructuradas — turnos, solicitudes de huéspedes, mantenimiento y reportes, sin que tu equipo salga de WhatsApp.'
             : 'NORA turns WhatsApp conversations into structured operations — shifts, guest requests, maintenance, and reporting — without asking your team to use anything other than WhatsApp.'}
         </p>
-        <Link href={`/${lang}/contact`} className="btn btn-primary industry-shell__cta">
+        <Link href={`/${lang}/demo`} className="btn btn-primary industry-shell__cta">
           {es ? 'Solicitar una demo' : 'Request a demo'}
         </Link>
       </section>

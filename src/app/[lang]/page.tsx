@@ -6,7 +6,6 @@ import { Accountability } from '@/components/accountability'
 import { ProductStory } from '@/components/product-story'
 import { DomainExplorer } from '@/components/domain-explorer'
 import { TrustSection } from '@/components/trust-section'
-import { EarlyAccessForm } from '@/components/early-access-form'
 import { TryNora } from '@/components/try-nora'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -27,7 +26,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       <ProductStory lang={lang} />
       <DomainExplorer lang={lang} />
       <TrustSection lang={lang} />
-      <EarlyAccessForm lang={lang} />
     </>
   )
 }
