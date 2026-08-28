@@ -544,13 +544,13 @@ describe('R2 integration — try-nora.tsx static verification', () => {
     expect(source).toContain('action?.type')      // structural check on the action object
   })
 
-  // Invariant 7: R2 boundary — no whatsapp collection in this phase
-  it('try-nora.tsx does NOT import collectWhatsApp — R2 boundary respected', () => {
-    expect(readTryNora()).not.toContain('collectWhatsApp')
+  // Invariant 7: R3 supersedes — collectWhatsApp and getHandoffUrl are now wired
+  it('try-nora.tsx imports collectWhatsApp for WhatsApp handoff (R3)', () => {
+    expect(readTryNora()).toContain('collectWhatsApp')
   })
 
-  it('try-nora.tsx does NOT import getHandoffUrl — R2 boundary respected', () => {
-    expect(readTryNora()).not.toContain('getHandoffUrl')
+  it('try-nora.tsx imports getHandoffUrl for handoff URL resolution (R3)', () => {
+    expect(readTryNora()).toContain('getHandoffUrl')
   })
 
   // Invariant 11: approved visual shell preserved — critical class names intact
@@ -583,5 +583,231 @@ describe('R2 integration — try-nora.tsx static verification', () => {
     const source = readFileSync(resolve(__dirname, '../../components/simple-message.tsx'), 'utf-8')
     expect(source).toContain('SimpleMessage')
     expect(source).not.toContain('nora-api')
+  })
+})
+
+// ==========================================================================
+// R3 — WhatsApp handoff: try-nora.tsx static verification (25 invariants)
+// ==========================================================================
+
+describe('R3 integration — try-nora.tsx WhatsApp handoff static verification', () => {
+  const tryNoraPath = resolve(__dirname, '../../components/try-nora.tsx')
+  const readTryNora = () => readFileSync(tryNoraPath, 'utf-8')
+
+  // 1. Phone collection appears only after structured offer_whatsapp
+  it('demo-wa-panel is gated by offerWhatsAppMade — phone form never shown pre-offer', () => {
+    const source = readTryNora()
+    expect(source).toContain('offerWhatsAppMade')
+    expect(source).toContain('demo-wa-panel')
+    // The WA panel is inside the else branch of !offerWhatsAppMade
+    expect(source).toContain('!offerWhatsAppMade')
+  })
+
+  // 2. No phone collection before offer_whatsapp — chat form shown when offer not made
+  it('demo-input-row (chat form) present when !offerWhatsAppMade — no pre-offer phone field', () => {
+    const source = readTryNora()
+    expect(source).toContain('!offerWhatsAppMade')
+    expect(source).toContain('demo-input-row')
+    // demo-wa-phone only inside the WA panel block
+    expect(source).toContain('demo-wa-phone')
+  })
+
+  // 3. Consent defaults false — never pre-checked
+  it('waConsent initialised to false — consent is never pre-checked', () => {
+    const source = readTryNora()
+    expect(source).toMatch(/waConsent.*=.*useState\(false\)/)
+  })
+
+  // 4. Submission blocked without consent — guard present before API call
+  it('submitHandoff returns early when waConsent is false', () => {
+    const source = readTryNora()
+    expect(source).toContain('if (!waConsent) return')
+    expect(source).toContain('disabled={!waConsent}')
+  })
+
+  // 5. Phone normalization is wired into the component
+  it('normalizePhone is imported and called with user input in submitHandoff', () => {
+    const source = readTryNora()
+    expect(source).toContain('normalizePhone')
+    expect(source).toContain('normalizePhone(waPhone)')
+  })
+
+  // 6. Personal WhatsApp numbers not rejected — no business account type check
+  it('no business account type restriction in try-nora.tsx or nora-api.ts', () => {
+    const tryNora = readTryNora()
+    const noraApi = readFileSync(resolve(__dirname, '../nora-api.ts'), 'utf-8')
+    for (const source of [tryNora, noraApi]) {
+      expect(source).not.toContain('businessAccount')
+      expect(source).not.toContain('isBusinessAccount')
+      expect(source).not.toContain('whatsapp.business')
+      expect(source).not.toContain('Business API')
+    }
+  })
+
+  // 7. Valid phone + consent calls collectWhatsApp with sessionToken and normalized phone
+  it('submitHandoff calls collectWhatsApp(sessionToken, normalized)', () => {
+    const source = readTryNora()
+    expect(source).toContain('collectWhatsApp(sessionToken, normalized)')
+  })
+
+  // 8. Same existing sessionToken used — not a new session
+  it('createConversation called exactly once in the file — not in submitHandoff', () => {
+    const source = readTryNora()
+    const callCount = (source.match(/createConversation\(/g) ?? []).length
+    expect(callCount).toBe(1)
+  })
+
+  // 9. consent is boolean true — sent by nora-api.ts, never overridden client-side
+  it('nora-api.ts sends consent as boolean true; try-nora.tsx never overrides it', () => {
+    const apiSource = readFileSync(resolve(__dirname, '../nora-api.ts'), 'utf-8')
+    expect(apiSource).toContain('consent: true')
+    // Component must not send a consent value itself — that is nora-api's job
+    expect(readTryNora()).not.toContain('consent: true')
+    expect(readTryNora()).not.toContain('consent: false')
+  })
+
+  // 10. No new WebChatSession created during handoff
+  it('resolveHandoffFresh calls getHandoffUrl — not createConversation', () => {
+    const source = readTryNora()
+    expect(source).toContain('getHandoffUrl(')
+    // Confirm resolveHandoffFresh does not call createConversation
+    const freshFn = source.split('resolveHandoffFresh')[1]?.split('async function ')[0] ?? ''
+    expect(freshFn).not.toContain('createConversation')
+  })
+
+  // 11. message_sent (confirmed phase) shows Open WhatsApp button
+  it("waPhase === 'confirmed' renders demo-wa-open-btn (Open WhatsApp)", () => {
+    const source = readTryNora()
+    expect(source).toContain("waPhase === 'confirmed'")
+    const confirmedBlock = source.split("waPhase === 'confirmed'")[1] ?? ''
+    expect(confirmedBlock).toContain('demo-wa-open-btn')
+  })
+
+  // 12. Open WhatsApp remains prominently available on message_sent — link not removed
+  it('confirmed state always renders the Open WhatsApp anchor when waUrl is present', () => {
+    const source = readTryNora()
+    const confirmedBlock = source.split("waPhase === 'confirmed'")[1] ?? ''
+    // Both the anchor and the href={waUrl} must be inside the confirmed block
+    expect(confirmedBlock).toContain('href={waUrl}')
+    expect(confirmedBlock).toContain('demo-wa-open-btn')
+    expect(confirmedBlock).toContain('Open WhatsApp')
+  })
+
+  // 13. fallback_sent (fallback phase) shows Open WhatsApp button
+  it("waPhase === 'fallback' renders demo-wa-open-btn (Open WhatsApp with NORA)", () => {
+    const source = readTryNora()
+    expect(source).toContain("waPhase === 'fallback'")
+    const fallbackBlock = source.split("waPhase === 'fallback'")[1] ?? ''
+    expect(fallbackBlock).toContain('demo-wa-open-btn')
+  })
+
+  // 14. Backend fallbackWhatsappUrl used exactly — no client-side URL reconstruction
+  it('Open WhatsApp href uses waUrl state (backend URL) — never reconstructed from phone', () => {
+    const source = readTryNora()
+    expect(source).toContain('href={waUrl}')
+    expect(source).not.toContain('wa.me/+')
+    expect(source).not.toContain('https://wa.me/')
+    expect(source).not.toContain('wa.me/${')
+  })
+
+  // 15. already_sent calls getHandoffUrl (via resolveHandoffFresh)
+  it("already_sent triggers resolveHandoffFresh — which calls getHandoffUrl", () => {
+    const source = readTryNora()
+    expect(source).toContain("'already_sent'")
+    const alreadySentContext = source.split("'already_sent'")[1]?.split('return')[0] ?? ''
+    expect(alreadySentContext).toContain('resolveHandoffFresh')
+  })
+
+  // 16. already_sent does not ask for phone again — goes to resolveHandoffFresh, not idle
+  it("already_sent path does not reset to idle (no re-collection of phone)", () => {
+    const source = readTryNora()
+    const alreadySentContext = source.split("'already_sent'")[1]?.split('return')[0] ?? ''
+    expect(alreadySentContext).not.toContain("setWaPhase('idle')")
+    expect(alreadySentContext).not.toContain("setWaPhone('')")
+  })
+
+  // 17. Duplicate handoff submit blocked while submitting or refreshing
+  it('submitHandoff returns early when waPhase is submitting or refreshing', () => {
+    const source = readTryNora()
+    expect(source).toContain("waPhase === 'submitting' || waPhase === 'refreshing') return")
+  })
+
+  // 18. Invalid phone preserves input — setWaPhone('') only in reset(), not in error handlers
+  it("invalid phone error sets waPhoneError and returns — does not clear waPhone", () => {
+    const source = readTryNora()
+    // PHONE_INVALID handler sets error and returns — phone preserved
+    expect(source).toContain("'PHONE_INVALID'")
+    expect(source).toContain('setWaPhoneError(')
+    // setWaPhone('') must appear only once (in reset())
+    const clearCalls = (source.match(/setWaPhone\(''\)/g) ?? []).length
+    expect(clearCalls).toBe(1)
+  })
+
+  // 19. Network failure preserves phone — submitHandoff's catch sets error state, not phone
+  it("network failure in submitHandoff calls setWaPhase('error') — waPhone not cleared", () => {
+    const source = readTryNora()
+    expect(source).toContain("setWaPhase('error')")
+    // setWaPhone('') appears only once — in reset() — never in catch blocks
+    const clearCalls = (source.match(/setWaPhone\(''\)/g) ?? []).length
+    expect(clearCalls).toBe(1)
+  })
+
+  // 20. Reset clears all handoff state
+  it("reset() clears every piece of WA handoff state", () => {
+    const source = readTryNora()
+    const resetBlock = source.split('function reset()')[1]?.split('function ')[0] ?? ''
+    expect(resetBlock).toContain("setWaPhone('')")
+    expect(resetBlock).toContain('setWaConsent(false)')
+    expect(resetBlock).toContain('setWaPhoneError(null)')
+    expect(resetBlock).toContain('setWaUrl(null)')
+    expect(resetBlock).toContain('setWaSubmitError(null)')
+    expect(resetBlock).toContain("setWaPhase('idle')")
+    expect(resetBlock).toContain('setOfferWhatsAppMade(false)')
+    expect(resetBlock).toContain('setSessionToken(null)')
+  })
+
+  // 21. No direct Render URL in client component
+  it('try-nora.tsx contains no render.com or onrender.com URLs', () => {
+    const source = readTryNora()
+    expect(source).not.toContain('render.com')
+    expect(source).not.toContain('onrender.com')
+  })
+
+  // 22. No NORA_SALES_API_SECRET in client component
+  it('try-nora.tsx never references NORA_SALES_API_SECRET', () => {
+    const source = readTryNora()
+    expect(source).not.toContain('NORA_SALES_API_SECRET')
+    expect(source).not.toContain('NEXT_PUBLIC_NORA_SALES_API_SECRET')
+  })
+
+  // 23. No static wa.me reconstruction — backend URL used as-is
+  it('try-nora.tsx contains no hardcoded wa.me link', () => {
+    expect(readTryNora()).not.toContain('wa.me')
+  })
+
+  // 24. offer_whatsapp detection remains structural — no reply string matching
+  it("offer_whatsapp detected via action?.type only — no string match on reply text", () => {
+    const source = readTryNora()
+    expect(source).toContain("action?.type === 'offer_whatsapp'")
+    expect(source).not.toContain("reply.includes('whatsapp')")
+    expect(source).not.toContain(".includes('offer_whatsapp')")
+    expect(source).not.toContain('.includes("whatsapp")')
+  })
+
+  // 25. Existing protected redesign components untouched
+  it('hero.tsx, simple-message.tsx, nav.tsx, signal-section.tsx contain no R3 additions', () => {
+    const files = [
+      resolve(__dirname, '../../components/hero.tsx'),
+      resolve(__dirname, '../../components/simple-message.tsx'),
+      resolve(__dirname, '../../components/nav.tsx'),
+      resolve(__dirname, '../../components/signal-section.tsx'),
+    ]
+    for (const filePath of files) {
+      const source = readFileSync(filePath, 'utf-8')
+      expect(source).not.toContain('demo-wa-panel')
+      expect(source).not.toContain('collectWhatsApp')
+      expect(source).not.toContain('submitHandoff')
+      expect(source).not.toContain('waPhone')
+    }
   })
 })
