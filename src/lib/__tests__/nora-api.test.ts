@@ -510,3 +510,78 @@ describe('Phase 3 security — client boundary', () => {
     expect(source).not.toContain("process.env['NORA_SALES_API_SECRET']")
   })
 })
+
+// ==========================================================================
+// R2 — Live chat wiring: try-nora.tsx static verification
+// ==========================================================================
+
+describe('R2 integration — try-nora.tsx static verification', () => {
+  const tryNoraPath = resolve(__dirname, '../../components/try-nora.tsx')
+  const readTryNora = () => readFileSync(tryNoraPath, 'utf-8')
+
+  // Invariant 1 + 2: live wiring exists — nora-api is imported
+  it('try-nora.tsx imports from @/lib/nora-api (live mode is wired)', () => {
+    expect(readTryNora()).toContain('@/lib/nora-api')
+  })
+
+  // Invariant 3 + 4: no raw fetch in component — all calls go through nora-api layer
+  it('try-nora.tsx makes no direct fetch() calls — all backend calls via nora-api', () => {
+    const source = readTryNora()
+    // Direct fetch would bypass the proxy security layer
+    expect(source).not.toContain("fetch('/api/nora-demo/chat'")
+    expect(source).not.toContain('fetch(')
+  })
+
+  // Invariant 5: duplicate send blocked — busy guard present
+  it('try-nora.tsx guards against duplicate sends with busy state', () => {
+    expect(readTryNora()).toContain('busy')
+  })
+
+  // Invariant 6: offer_whatsapp detected from structured action.type only
+  it('offer_whatsapp detected from action?.type (structural), not reply string matching', () => {
+    const source = readTryNora()
+    expect(source).toContain('offer_whatsapp')   // the literal action type value
+    expect(source).toContain('action?.type')      // structural check on the action object
+  })
+
+  // Invariant 7: R2 boundary — no whatsapp collection in this phase
+  it('try-nora.tsx does NOT import collectWhatsApp — R2 boundary respected', () => {
+    expect(readTryNora()).not.toContain('collectWhatsApp')
+  })
+
+  it('try-nora.tsx does NOT import getHandoffUrl — R2 boundary respected', () => {
+    expect(readTryNora()).not.toContain('getHandoffUrl')
+  })
+
+  // Invariant 11: approved visual shell preserved — critical class names intact
+  it('approved visual class names preserved in try-nora.tsx', () => {
+    const source = readTryNora()
+    expect(source).toContain('try-nora-section')
+    expect(source).toContain('demo-window')
+    expect(source).toContain('demo-messages')
+    expect(source).toContain('demo-input-row')
+    expect(source).toContain('demo-window-top')
+    expect(source).toContain('demo-window-foot')
+    expect(source).toContain('demo-typing')
+  })
+
+  // Invariant 12: curated demo route still exists (file not deleted)
+  it('/api/nora-demo/chat route file still exists — curated demo route preserved', () => {
+    const chatRoutePath = resolve(__dirname, '../../app/api/nora-demo/chat/route.ts')
+    expect(() => readFileSync(chatRoutePath, 'utf-8')).not.toThrow()
+  })
+
+  // Invariant 13: hero.tsx and simple-message.tsx untouched
+  it('hero.tsx is unchanged — contains distinctive redesign content, no nora-api import', () => {
+    const source = readFileSync(resolve(__dirname, '../../components/hero.tsx'), 'utf-8')
+    expect(source).toContain('INDUSTRY_CONFIG')   // redesign-specific SVG hub system
+    expect(source).not.toContain('nora-api')
+    expect(source).not.toContain('createConversation')
+  })
+
+  it('simple-message.tsx is unchanged — contains redesign content, no nora-api import', () => {
+    const source = readFileSync(resolve(__dirname, '../../components/simple-message.tsx'), 'utf-8')
+    expect(source).toContain('SimpleMessage')
+    expect(source).not.toContain('nora-api')
+  })
+})

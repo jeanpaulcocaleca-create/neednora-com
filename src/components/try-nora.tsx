@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 import { ArrowUp, LockKeyhole, RotateCcw, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
+import { createConversation, sendMessage, NoraSalesApiError } from '@/lib/nora-api'
 
 type Msg = { role: 'user' | 'assistant'; content: string }
 
@@ -15,6 +16,8 @@ export function TryNora({ lang }: { lang: Locale }) {
   const [messages, setMessages] = useState<Msg[]>([{ role: 'assistant', content: starter }])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
+  const [sessionToken, setSessionToken] = useState<string | null>(null)
+  const [offerWhatsAppMade, setOfferWhatsAppMade] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' }) }, [messages, busy])
@@ -22,24 +25,61 @@ export function TryNora({ lang }: { lang: Locale }) {
   async function send(e: FormEvent) {
     e.preventDefault()
     const text = input.trim()
-    if (!text || busy) return
-    const next = [...messages, { role: 'user' as const, content: text }]
-    setMessages(next)
+    if (!text || busy || offerWhatsAppMade) return
+
     setInput('')
     setBusy(true)
+
+    // Optimistic: show user message immediately in every case
+    setMessages(prev => [...prev, { role: 'user' as const, content: text }])
+
     try {
-      const r = await fetch('/api/nora-demo/chat', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ lang, messages: next }),
-      })
-      const d = await r.json()
-      setMessages([...next, { role: 'assistant', content: String(d.message || '') }])
-    } catch {
-      setMessages([...next, { role: 'assistant', content: es ? 'No pude responder en este momento. Inténtelo otra vez.' : 'I couldn’t respond just now. Please try again.' }])
-    } finally { setBusy(false) }
+      let token = sessionToken
+
+      if (!token) {
+        // First message: create a live WebChatSession, capture the real NORA opener
+        const { sessionToken: newToken, reply: opener } = await createConversation(lang)
+        token = newToken
+        setSessionToken(token)
+        // Replace hardcoded starter + optimistic user msg with: real opener + user msg
+        setMessages([
+          { role: 'assistant', content: opener },
+          { role: 'user', content: text },
+        ])
+      }
+
+      // Send message and receive real NORA reply; reuse same token for every turn
+      const result = await sendMessage(token, text)
+      setMessages(prev => [...prev, { role: 'assistant', content: result.reply }])
+
+      // Detect offer_whatsapp from structured action field only — never string match reply text
+      if (result.action?.type === 'offer_whatsapp') {
+        setOfferWhatsAppMade(true)
+      }
+
+    } catch (err) {
+      const apiErr = err instanceof NoraSalesApiError ? err : null
+      const msg = apiErr?.message ?? (es
+        ? 'No pude responder en este momento. Inténtelo otra vez.'
+        : 'I couldn’t respond just now. Please try again.')
+
+      // Preserve typed text so user can re-send without retyping on retryable failures
+      if (apiErr?.retryable) setInput(text)
+      // Expired session: clear token so next send creates a fresh session automatically
+      if (apiErr?.code === 'SESSION_EXPIRED') setSessionToken(null)
+
+      setMessages(prev => [...prev, { role: 'assistant', content: msg }])
+    } finally {
+      setBusy(false)
+    }
   }
 
-  function reset() { setMessages([{ role: 'assistant', content: starter }]); setInput('') }
+  function reset() {
+    setMessages([{ role: 'assistant', content: starter }])
+    setInput('')
+    setSessionToken(null)
+    setOfferWhatsAppMade(false)
+  }
 
   return (
     <section id="try-nora" className="section try-nora-section">
@@ -71,10 +111,14 @@ export function TryNora({ lang }: { lang: Locale }) {
             {busy && <div className="demo-typing"><span /><span /><span /></div>}
           </div>
           <form onSubmit={send} className="demo-input-row">
-            <input value={input} onChange={e => setInput(e.target.value)} placeholder={es ? 'Ej: Tengo 3 restaurantes y 42 empleados…' : 'Example: I have 3 restaurants and 42 employees…'} maxLength={800} aria-label="Message NORA" />
-            <button aria-label="Send" disabled={busy || !input.trim()}><ArrowUp size={19} /></button>
+            <input value={input} onChange={e => setInput(e.target.value)} placeholder={es ? 'Ej: Tengo 3 restaurantes y 42 empleados…' : 'Example: I have 3 restaurants and 42 employees…'} maxLength={800} aria-label="Message NORA" disabled={busy || offerWhatsAppMade} />
+            <button aria-label="Send" disabled={busy || !input.trim() || offerWhatsAppMade}><ArrowUp size={19} /></button>
           </form>
-          <div className="demo-window-foot">{es ? 'NORA no ejecuta acciones reales desde esta demo.' : 'NORA cannot execute real operational actions from this demo.'}</div>
+          <div className="demo-window-foot">
+            {offerWhatsAppMade
+              ? (es ? 'NORA está lista para continuar en WhatsApp.' : 'NORA is ready to continue on WhatsApp.')
+              : (es ? 'NORA no ejecuta acciones reales desde esta demo.' : 'NORA cannot execute real operational actions from this demo.')}
+          </div>
         </div>
       </div>
     </section>
