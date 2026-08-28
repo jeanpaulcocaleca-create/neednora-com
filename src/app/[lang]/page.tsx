@@ -1,13 +1,15 @@
 import type { Metadata } from 'next'
 import { getTranslations, type Locale } from '@/lib/i18n'
 import { Hero } from '@/components/hero'
-import { PeaceOfMind } from '@/components/peace-of-mind'
-import { SimpleMessage } from '@/components/simple-message'
-import { Accountability } from '@/components/accountability'
-import { ProductStory } from '@/components/product-story'
-import { DomainExplorer } from '@/components/domain-explorer'
+import { Switchboard } from '@/components/switchboard'
+import { WatchNora } from '@/components/watch-nora'
+import { Threshold } from '@/components/threshold'
+import { MemoryFlip } from '@/components/memory-flip'
+import { IndustriesSection } from '@/components/industries-section'
+import { TimeSection } from '@/components/time-section'
 import { TrustSection } from '@/components/trust-section'
 import { TryNora } from '@/components/try-nora'
+import { StartCta } from '@/components/start-cta'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -18,16 +20,22 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: langRaw } = await params
   const lang = langRaw as Locale
+
   return (
     <>
       <Hero lang={lang} />
-      <PeaceOfMind lang={lang} />
-      <SimpleMessage lang={lang} />
-      <Accountability lang={lang} />
-      <TryNora lang={lang} />
-      <ProductStory lang={lang} />
-      <DomainExplorer lang={lang} />
-      <TrustSection lang={lang} />
+      <div className="lworld light" data-nav="light">
+        <div className="qline" aria-hidden="true"><span className="track" /><span className="fill" /></div>
+        <Switchboard lang={lang} />
+        <WatchNora lang={lang} />
+        <Threshold lang={lang} />
+        <MemoryFlip lang={lang} />
+        <IndustriesSection lang={lang} />
+        <TimeSection lang={lang} />
+        <TrustSection lang={lang} />
+        <TryNora lang={lang} />
+      </div>
+      <StartCta lang={lang} />
     </>
   )
 }

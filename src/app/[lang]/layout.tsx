@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { locales, getTranslations, type Locale } from '@/lib/i18n'
-import { Nav } from '@/components/nav'
+import { ClientShell } from '@/components/client-shell'
 import { Footer } from '@/components/footer'
 
 export async function generateStaticParams() {
@@ -38,10 +38,13 @@ export default async function LangLayout({
   const { lang } = await params
   const locale = lang as Locale
   return (
-    <>
-      <Nav lang={locale} />
-      <main>{children}</main>
+    // Footer is inside ClientShell so it lives inside #page-root
+    // and dims + scales together with the rest of the page when the contact overlay opens
+    <ClientShell lang={locale}>
+      <main id="main" tabIndex={-1}>
+        {children}
+      </main>
       <Footer lang={locale} />
-    </>
+    </ClientShell>
   )
 }

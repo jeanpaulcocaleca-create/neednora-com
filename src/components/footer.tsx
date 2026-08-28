@@ -1,86 +1,59 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
-
-const NAV_LINKS = (lang: string, es: boolean) => [
-  { href: `/${lang}/#how-nora-works`, label: es ? 'Cómo trabaja'          : 'How NORA works' },
-  { href: `/${lang}/#try-nora`,       label: es ? 'Prueba NORA'           : 'Try NORA' },
-  { href: `/${lang}/privacy-policy`,  label: es ? 'Privacidad'            : 'Privacy' },
-  { href: `/${lang}/terms-of-service`,label: es ? 'Términos'              : 'Terms' },
-  { href: `/${lang}/data-deletion`,   label: es ? 'Eliminación de datos'  : 'Data deletion' },
-  { href: `/${lang}/contact`,         label: es ? 'Contacto'              : 'Contact' },
-]
 
 export function Footer({ lang }: { lang: Locale }) {
   const es = lang === 'es'
+  const altLang = es ? 'en' : 'es'
+
   return (
-    <footer
-      role="contentinfo"
-      style={{
-        background: 'var(--neutral-10)',
-        color: 'var(--dark-text-muted)',
-        padding: '3rem 0 2rem',
-      }}
-    >
-      <div
-        className="container"
-        style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
-      >
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-          gap: '2rem', flexWrap: 'wrap',
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', maxWidth: '28ch' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Image src="/brand/nora-icon.png" alt="NORA" width={28} height={28} />
-              <span style={{
-                fontWeight: 700, fontSize: '0.9375rem',
-                color: 'var(--dark-text)', letterSpacing: '0.04em',
-                fontFamily: 'var(--font-body)',
-              }}>
-                NORA
-              </span>
-            </span>
-            <p style={{ fontSize: '0.875rem', color: 'var(--dark-text-muted)', lineHeight: 1.65, margin: 0 }}>
-              {es
-                ? 'Networked Operations & Response Assistant. Menos persecución. Más control. Más paz mental.'
-                : 'Networked Operations & Response Assistant. Less chasing. More control. More peace of mind.'}
-            </p>
-          </div>
-
-          <nav
-            aria-label={es ? 'Pie de página' : 'Footer'}
-            style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}
-          >
-            {NAV_LINKS(lang, es).map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                style={{
-                  fontSize: '0.875rem', color: 'var(--dark-text-muted)',
-                  textDecoration: 'none', transition: 'color 150ms ease',
-                }}
-              >
-                {label}
+    <footer>
+      <div className="foot-grid">
+        <div className="foot-brand">
+          <span className="nav-mark"><span className="dot" aria-hidden="true" />NORA</span>
+          <p>
+            {es
+              ? 'Asistente de Operaciones y Respuestas en Red. NORA maneja el ruido del negocio para que tú no tengas que hacerlo.'
+              : 'Networked Operations & Response Assistant. NORA handles the business noise so you don\'t have to.'}
+          </p>
+        </div>
+        <div>
+          <h4>{es ? 'Producto' : 'Product'}</h4>
+          <ul>
+            <li><Link href={`/${lang}/how-it-works`}>{es ? 'Cómo funciona NORA' : 'How NORA works'}</Link></li>
+            <li><Link href={`/${lang}/industries`}>{es ? 'Industrias' : 'Industries'}</Link></li>
+            <li><Link href={`/${lang}/pricing`}>{es ? 'Precios' : 'Pricing'}</Link></li>
+            <li><Link href={`/${lang}/demo`}>{es ? 'Solicitar demo' : 'Request a demo'}</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h4>{es ? 'Empresa' : 'Company'}</h4>
+          <ul>
+            <li><Link href={`/${lang}/about`}>{es ? 'Acerca de NORA' : 'About NORA'}</Link></li>
+            <li><Link href={`/${lang}/demo`}>{es ? 'Contacto' : 'Contact'}</Link></li>
+            <li>
+              <Link href={`/${altLang}`} lang={altLang} hrefLang={altLang}>
+                {es ? 'English' : 'Español'}
               </Link>
-            ))}
-          </nav>
+            </li>
+          </ul>
         </div>
-
-        <div style={{
-          paddingTop: '1.5rem',
-          borderTop: '1px solid var(--dark-border)',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          flexWrap: 'wrap', gap: '0.5rem',
-        }}>
-          <span style={{ fontSize: '0.8125rem', color: 'var(--dark-text-faint)' }}>
-            © 2026 NORA.{' '}
-            {es ? 'Todos los derechos reservados.' : 'All rights reserved.'}
-          </span>
-          <span style={{ fontSize: '0.8125rem', color: 'var(--dark-text-faint)' }}>
-            neednora.com
-          </span>
+        <div>
+          <h4>{es ? 'Legal' : 'Legal'}</h4>
+          <ul>
+            <li><Link href={`/${lang}/privacy-policy`}>{es ? 'Política de privacidad' : 'Privacy policy'}</Link></li>
+            <li><Link href={`/${lang}/terms-of-service`}>{es ? 'Términos de servicio' : 'Terms of service'}</Link></li>
+            <li><Link href={`/${lang}/cookies`}>{es ? 'Cookies y almacenamiento' : 'Cookies & storage'}</Link></li>
+            <li><Link href={`/${lang}/data-deletion`}>{es ? 'Eliminación de datos' : 'Data deletion'}</Link></li>
+          </ul>
         </div>
+      </div>
+      <div className="foot-legal">
+        <span>© 2026 NORA. {es ? 'Todos los derechos reservados.' : 'All rights reserved.'}</span>
+        <span>
+          {es
+            ? 'Los negocios y personas mostrados son ilustrativos. Las imágenes de este sitio son generadas por IA.'
+            : 'The businesses and people shown are illustrative. Imagery on this site is AI-generated.'}
+        </span>
       </div>
     </footer>
   )

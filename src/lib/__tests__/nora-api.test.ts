@@ -572,9 +572,10 @@ describe('R2 integration — try-nora.tsx static verification', () => {
   })
 
   // Invariant 13: hero.tsx and simple-message.tsx untouched
-  it('hero.tsx is unchanged — contains distinctive redesign content, no nora-api import', () => {
+  it('hero.tsx is unchanged — contains distinctive Gen 3 content, no nora-api import', () => {
     const source = readFileSync(resolve(__dirname, '../../components/hero.tsx'), 'utf-8')
-    expect(source).toContain('INDUSTRY_CONFIG')   // redesign-specific SVG hub system
+    expect(source).toContain('VIDEO_BYTES')        // Gen 3 hero scrub video integrity check
+    expect(source).toContain('hero-stage')         // Gen 3 hero stage class
     expect(source).not.toContain('nora-api')
     expect(source).not.toContain('createConversation')
   })
