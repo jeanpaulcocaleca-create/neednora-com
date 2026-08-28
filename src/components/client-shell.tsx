@@ -5,7 +5,7 @@ import type { Locale } from '@/lib/i18n'
 import { ContactProvider } from '@/lib/contact-context'
 import { SiteEffects } from '@/components/site-effects'
 import { Nav } from '@/components/nav'
-import { TalkToNora } from '@/components/talk-to-nora'
+import { NoraModal } from '@/components/nora-modal'
 
 // children should include both <main> and <Footer> so #page-root dims them together
 export function ClientShell({ lang, children }: { lang: Locale; children: ReactNode }) {
@@ -18,7 +18,7 @@ export function ClientShell({ lang, children }: { lang: Locale; children: ReactN
         <Nav lang={lang} />
         {children}
       </div>
-      <TalkToNora lang={lang} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <NoraModal lang={lang} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </ContactProvider>
   )
 }
