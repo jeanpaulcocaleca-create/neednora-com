@@ -1,6 +1,6 @@
 'use client'
 
-import { type FormEvent, useEffect, useRef, useState } from 'react'
+import { type FormEvent, useCallback, useEffect, useRef, useState } from 'react'
 import type { Locale } from '@/lib/i18n'
 import {
   createConversation,
@@ -13,6 +13,7 @@ import {
 
 type Msg = { role: 'user' | 'assistant'; content: string }
 type WaPhase = 'idle' | 'submitting' | 'refreshing' | 'confirmed' | 'fallback' | 'error'
+type SessionPhase = 'loading' | 'ready' | 'error'
 
 interface Props {
   lang: Locale
@@ -21,23 +22,20 @@ interface Props {
 }
 
 // NoraModal: real NORA conversation (SALES-03C) inside the Gen 3 contact overlay shell.
-// Replaces TalkToNora (scripted wizard). TryNora on the homepage is unchanged.
+// Session is created eagerly when the modal opens — the real backend opener appears
+// immediately with no local placeholder. TryNora on the homepage is unchanged.
 export function NoraModal({ lang, isOpen, onClose }: Props) {
   const es = lang === 'es'
 
-  // Shown before the first real backend session is created. Replaced on first send.
-  const starter = es
-    ? 'Hola. Soy NORA. ¿Cómo funciona tu negocio? ¿Qué es lo más difícil de mantener bajo control hoy?'
-    : "Hi. I'm NORA. Tell me about your business. What's hardest to keep under control today?"
-
-  // ── conversation state (mirrors TryNora) ──────────────────────────────────
-  const [messages, setMessages] = useState<Msg[]>([{ role: 'assistant', content: starter }])
+  // ── session bootstrap ─────────────────────────────────────────────────────────
+  const [sessionPhase, setSessionPhase] = useState<SessionPhase>('loading')
+  const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
   const [sessionToken, setSessionToken] = useState<string | null>(null)
   const [offerWhatsAppMade, setOfferWhatsAppMade] = useState(false)
 
-  // ── WA handoff state machine (mirrors TryNora) ────────────────────────────
+  // ── WA handoff state machine (mirrors TryNora) ────────────────────────────────
   const [waPhone, setWaPhone] = useState('')
   const [waConsent, setWaConsent] = useState(false)
   const [waPhoneError, setWaPhoneError] = useState<string | null>(null)
@@ -47,6 +45,34 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
 
   const bodyRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  // Incremented on each startSession call; stale responses are discarded.
+  const callIdRef = useRef(0)
+
+  // Creates a new backend WebChatSession and displays the real opener.
+  // callIdRef guards against stale responses if called multiple times (reset, Strict Mode).
+  const startSession = useCallback(async () => {
+    const id = ++callIdRef.current
+    setSessionPhase('loading')
+    setMessages([])
+    setSessionToken(null)
+    setOfferWhatsAppMade(false)
+    try {
+      const { sessionToken: tok, reply: opener } = await createConversation(lang)
+      if (id !== callIdRef.current) return
+      setSessionToken(tok)
+      setMessages([{ role: 'assistant', content: opener }])
+      setSessionPhase('ready')
+    } catch {
+      if (id !== callIdRef.current) return
+      setSessionPhase('error')
+    }
+  }, [lang])
+
+  // Eager bootstrap: component only mounts when isOpen=true (early return below),
+  // so this effect fires once per open — exactly when we need the backend session.
+  useEffect(() => {
+    void startSession()
+  }, [startSession])
 
   // body.contact-open controls CSS backdrop/scroll-lock
   useEffect(() => {
@@ -57,50 +83,35 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
   // Auto-scroll chat to bottom
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight
-  }, [messages, busy])
+  }, [messages, busy, sessionPhase])
 
-  // Focus input when overlay opens
+  // Focus input when session is ready
   useEffect(() => {
-    if (isOpen) setTimeout(() => inputRef.current?.focus(), 350)
-  }, [isOpen])
+    if (sessionPhase === 'ready') setTimeout(() => inputRef.current?.focus(), 100)
+  }, [sessionPhase])
 
   // Escape key closes overlay
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape' && isOpen) onClose()
+      if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [isOpen, onClose])
+  }, [onClose])
 
-  // ── send: creates session on first message, continues same token afterwards ──
+  // Session is always created on mount — doSend only needs to forward messages.
   async function doSend() {
     const text = input.trim()
-    if (!text || busy || offerWhatsAppMade) return
+    if (!text || busy || offerWhatsAppMade || !sessionToken) return
 
     setInput('')
     setBusy(true)
-    // Optimistic: show user message immediately
     setMessages(prev => [...prev, { role: 'user', content: text }])
 
     try {
-      let token = sessionToken
-
-      if (!token) {
-        // First message: create a real WebChatSession; replace hardcoded starter with live opener
-        const { sessionToken: newToken, reply: opener } = await createConversation(lang)
-        token = newToken
-        setSessionToken(token)
-        setMessages([
-          { role: 'assistant', content: opener },
-          { role: 'user', content: text },
-        ])
-      }
-
-      const result = await sendMessage(token, text)
+      const result = await sendMessage(sessionToken, text)
       setMessages(prev => [...prev, { role: 'assistant', content: result.reply }])
 
-      // offer_whatsapp comes from the structured action field only — never string-match
       if (result.action?.type === 'offer_whatsapp') {
         setOfferWhatsAppMade(true)
       }
@@ -108,9 +119,9 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
       const apiErr = err instanceof NoraSalesApiError ? err : null
       const msg = apiErr?.message ?? (es
         ? 'No pude responder. Inténtalo de nuevo.'
-        : "Unable to respond right now. Please try again.")
+        : 'Unable to respond right now. Please try again.')
       if (apiErr?.retryable) setInput(text)
-      if (apiErr?.code === 'SESSION_EXPIRED') setSessionToken(null)
+      if (apiErr?.code === 'SESSION_EXPIRED') setSessionPhase('error')
       setMessages(prev => [...prev, { role: 'assistant', content: msg }])
     } finally {
       setBusy(false)
@@ -122,7 +133,6 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
     void doSend()
   }
 
-  // ── WA handoff: phone collection → /whatsapp endpoint → fallbackWhatsappUrl ──
   async function resolveHandoffFresh(token: string) {
     setWaPhase('refreshing')
     try {
@@ -199,21 +209,19 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
     setWaPhase('idle')
   }
 
+  // Start over: reset all WA state and open a fresh backend session.
   function reset() {
-    setMessages([{ role: 'assistant', content: starter }])
     setInput('')
-    setSessionToken(null)
-    setOfferWhatsAppMade(false)
     setWaPhone('')
     setWaConsent(false)
     setWaPhoneError(null)
     setWaUrl(null)
     setWaSubmitError(null)
     setWaPhase('idle')
+    void startSession()
   }
 
-  // Unmounting on close resets all state — each overlay open starts fresh.
-  // (The conversation continues on WhatsApp; the overlay is just the entry point.)
+  // Component unmounts when !isOpen — all state resets automatically on each open.
   if (!isOpen) return null
 
   return (
@@ -248,13 +256,35 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
           </button>
         </div>
 
-        {/* ── Chat body: message bubbles ── */}
+        {/* ── Chat body: loading / messages / typing indicator ── */}
         <div className="contact-body" aria-live="polite" ref={bodyRef}>
+          {/* Typing indicator while backend creates the session */}
+          {sessionPhase === 'loading' && (
+            <div
+              className="typing on"
+              aria-label={es ? 'NORA conectando…' : 'NORA connecting…'}
+              style={{ alignSelf: 'flex-start', borderRadius: '14px 14px 14px 4px', background: 'var(--wa-in)' }}
+            >
+              <i /><i /><i />
+            </div>
+          )}
+
+          {/* Session creation failed and no messages to show */}
+          {sessionPhase === 'error' && messages.length === 0 && (
+            <div className="bub in enter">
+              {es
+                ? 'NORA no está disponible en este momento.'
+                : 'NORA is not available right now.'}
+            </div>
+          )}
+
           {messages.map((m, i) => (
             <div key={i} className={`bub ${m.role === 'assistant' ? 'in' : 'out'} enter`}>
               {m.content}
             </div>
           ))}
+
+          {/* Typing indicator while waiting for NORA's reply */}
           {busy && (
             <div
               className="typing on"
@@ -266,8 +296,14 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
           )}
         </div>
 
-        {/* ── Bottom: conversation input or WA handoff panel ── */}
-        {!offerWhatsAppMade ? (
+        {/* ── Bottom: input form, WA handoff panel, or error retry ── */}
+        {sessionPhase === 'error' && !offerWhatsAppMade ? (
+          <div className="contact-form nora-wa-panel">
+            <button className="btn btn-solid" onClick={reset}>
+              {es ? 'Intentar de nuevo' : 'Try again'}
+            </button>
+          </div>
+        ) : !offerWhatsAppMade ? (
           <form className="contact-form" noValidate onSubmit={handleFormSubmit}>
             <div className="row">
               <input
@@ -278,12 +314,12 @@ export function NoraModal({ lang, isOpen, onClose }: Props) {
                 placeholder={es ? 'Cuéntame de tu negocio…' : 'Tell me about your business…'}
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                disabled={busy}
+                disabled={busy || sessionPhase !== 'ready'}
               />
               <button
                 className="cf-send"
                 type="submit"
-                disabled={busy || !input.trim()}
+                disabled={busy || !input.trim() || sessionPhase !== 'ready'}
                 aria-label={es ? 'Enviar' : 'Send'}
               >
                 ↑
